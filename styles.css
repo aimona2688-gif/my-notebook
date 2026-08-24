@@ -483,6 +483,7 @@ body, html {
   display: block;
 }
 
+.text-pdf { color: #f43f5e; }
 .text-word { color: #2b579a; }
 .text-html { color: #e44d26; }
 

@@ -45,6 +45,7 @@ const elements = {
   dragDropOverlay: document.getElementById('drag-drop-overlay'),
   
   // 匯出按鈕
+  exportPdf: document.getElementById('export-pdf'),
   exportWord: document.getElementById('export-word'),
   exportHtml: document.getElementById('export-html'),
   exportTxt: document.getElementById('export-txt'),
@@ -276,6 +277,11 @@ function setupEventListeners() {
   }
 
   // 匯出功能監聽
+  elements.exportPdf.addEventListener('click', (e) => {
+    e.preventDefault();
+    exportToPdf();
+  });
+
   elements.exportWord.addEventListener('click', (e) => {
     e.preventDefault();
     exportToWord();
@@ -521,8 +527,50 @@ function updateWordCount() {
 }
 
 // ==========================================================================
-// 📄 匯出模組 (包含核心 Word .docx 匯出)
-// ==========================================================================
+// 📄 匯出模組 (包含 PDF & Word 匯出)
+
+// 匯出為 PDF 文件
+async function exportToPdf() {
+  if (!currentNoteId) return;
+  const note = await db.notes.get(currentNoteId);
+  if (!note) return;
+
+  const noteTitle = note.title || '筆記';
+  
+  // 建立排版良好的臨時 HTML 元素供 PDF 轉換
+  const tempDiv = document.createElement('div');
+  tempDiv.style.padding = '20px';
+  tempDiv.style.color = '#1e293b';
+  tempDiv.style.fontFamily = "'Noto Sans TC', sans-serif";
+  tempDiv.innerHTML = `
+    <h1 style="font-size: 24px; color: #0f172a; border-bottom: 2px solid #6366f1; padding-bottom: 8px; margin-bottom: 6px;">${escapeHtml(noteTitle)}</h1>
+    <p style="color: #64748b; font-size: 12px; margin-bottom: 16px;">最後更新時間: ${formatDate(note.updatedAt)}</p>
+    <div style="font-size: 14px; line-height: 1.6;">${note.content}</div>
+  `;
+
+  const opt = {
+    margin:       10,
+    filename:     `${noteTitle}.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true },
+    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  try {
+    elements.saveStatus.className = 'saving';
+    elements.saveStatus.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> PDF 匯出中...';
+    
+    await html2pdf().set(opt).from(tempDiv).save();
+
+    elements.saveStatus.className = 'saved';
+    elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 已儲存';
+  } catch (err) {
+    console.error('PDF 匯出失敗:', err);
+    alert('PDF 匯出時發生錯誤，請稍後再試。');
+  }
+}
+
+// 匯出為 Word (.docx)
 
 // 匯出為 Word (.docx)
 async function exportToWord() {

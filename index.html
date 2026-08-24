@@ -14,6 +14,8 @@
   <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
   <!-- Chart.js 圖表庫 -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- html2pdf.js (PDF 匯出庫) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="styles.css">
   <!-- PWA Manifest & Theme Color -->
@@ -93,6 +95,7 @@
               <i class="fa-solid fa-file-export"></i> 匯出檔案 <i class="fa-solid fa-chevron-down"></i>
             </button>
             <div class="dropdown-content">
+              <a href="#" id="export-pdf"><i class="fa-solid fa-file-pdf text-pdf"></i> 匯出為 PDF 文件</a>
               <a href="#" id="export-word"><i class="fa-solid fa-file-word text-word"></i> 匯出為 Word (.docx)</a>
               <a href="#" id="export-html"><i class="fa-solid fa-code text-html"></i> 匯出為 HTML 網頁</a>
               <a href="#" id="export-txt"><i class="fa-solid fa-file-lines"></i> 匯出為 純文字 (.txt)</a>
