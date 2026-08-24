@@ -69,19 +69,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   initQuillEditor();
   setupEventListeners();
   setupDragAndDrop();
-  await loadNotesList();
   
-  // 若資料庫為空，建立預設示範筆記
-  const count = await db.notes.count();
-  if (count === 0) {
-    await createDemoNote();
-  } else {
-    // 載入第一篇筆記
-    const firstNote = await db.notes.orderBy('updatedAt').reverse().first();
-    if (firstNote) {
-      await loadNoteToEditor(firstNote.id);
+  // 自動清理之前不小心加上黑底/全藍的舊歡迎筆記
+  const allNotes = await db.notes.toArray();
+  for (let n of allNotes) {
+    if (n.title && n.title.includes('歡迎使用 Aura Note')) {
+      await db.notes.delete(n.id);
     }
   }
+
+  await createDemoNote();
+  await loadNotesList();
 });
 
 // 初始化 Quill 編輯器
