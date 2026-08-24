@@ -621,6 +621,14 @@ body, html {
 }
 
 /* Customizing Quill Toolbar & Container */
+/* 字級大小與字型變化設定 */
+.ql-editor .ql-size-small { font-size: 0.75rem !important; }
+.ql-editor .ql-size-large { font-size: 1.3rem !important; }
+.ql-editor .ql-size-huge { font-size: 1.85rem !important; }
+
+.ql-editor .ql-font-serif { font-family: 'Noto Serif TC', Georgia, serif !important; }
+.ql-editor .ql-font-monospace { font-family: 'Fira Code', 'Courier New', monospace !important; }
+
 #toolbar-container {
   border: 1px solid var(--border-color) !important;
   border-radius: var(--radius-md) var(--radius-md) 0 0;

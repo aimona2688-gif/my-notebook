@@ -126,19 +126,24 @@
 
         <!-- 自訂進階工具列與 Quill Editor 結合 -->
         <div id="toolbar-container">
-          <!-- 字體與樣式 -->
+          <!-- 字體字型與字級大小選擇 -->
           <span class="ql-formats">
+            <select class="ql-font" title="選擇字型">
+              <option selected>Noto Sans (預設微軟正黑體)</option>
+              <option value="serif">明體 / 襯線體 (Serif)</option>
+              <option value="monospace">等寬體 / 程式碼體 (Monospace)</option>
+            </select>
             <select class="ql-header">
-              <option value="1">標題 1 (大)</option>
-              <option value="2">標題 2 (中)</option>
-              <option value="3">標題 3 (小)</option>
+              <option value="1">標題 1 (特大)</option>
+              <option value="2">標題 2 (大)</option>
+              <option value="3">標題 3 (中)</option>
               <option selected>一般內文</option>
             </select>
-            <select class="ql-size">
-              <option value="small">小字體</option>
-              <option selected>正常字體</option>
-              <option value="large">大字體</option>
-              <option value="huge">超大字體</option>
+            <select class="ql-size" title="字級大小">
+              <option value="small">小字體 (12px)</option>
+              <option selected>正常字體 (16px)</option>
+              <option value="large">大字體 (20px)</option>
+              <option value="huge">超大字體 (28px)</option>
             </select>
           </span>
 
