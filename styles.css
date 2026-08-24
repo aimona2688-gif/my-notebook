@@ -649,27 +649,49 @@ body, html {
   fill: var(--text-primary) !important;
 }
 
-/* 修正下拉選單 (字體/標題/字級) 彈出的白底白字對比問題 */
+/* 徹底修復 Quill 下拉選單 (字型、標題、字級) 白底白字對比問題 */
+.ql-snow .ql-picker {
+  color: var(--text-primary) !important;
+}
+
+.ql-snow .ql-picker-label {
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.ql-snow .ql-picker-label::before {
+  color: var(--text-primary) !important;
+}
+
 .ql-snow .ql-picker-options {
-  background-color: var(--bg-secondary) !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: var(--radius-md) !important;
-  box-shadow: var(--card-shadow) !important;
-  padding: 6px 0 !important;
-  z-index: 9999 !important;
+  background-color: #1e293b !important;
+  border: 1px solid #475569 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+  padding: 6px !important;
+  z-index: 99999 !important;
 }
 
 .ql-snow .ql-picker-options .ql-picker-item {
-  color: var(--text-primary) !important;
+  color: #f8fafc !important;
   padding: 8px 12px !important;
   font-size: 0.9rem !important;
-  transition: var(--transition-fast);
+  border-radius: 4px !important;
+}
+
+.ql-snow .ql-picker-options .ql-picker-item::before {
+  color: #f8fafc !important;
 }
 
 .ql-snow .ql-picker-options .ql-picker-item:hover,
 .ql-snow .ql-picker-options .ql-picker-item.ql-selected {
-  background-color: var(--bg-tertiary) !important;
-  color: var(--accent-color) !important;
+  background-color: #334155 !important;
+  color: #818cf8 !important;
+}
+
+.ql-snow .ql-picker-options .ql-picker-item:hover::before,
+.ql-snow .ql-picker-options .ql-picker-item.ql-selected::before {
+  color: #818cf8 !important;
 }
 
 .custom-tb-btn {
