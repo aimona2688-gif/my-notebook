@@ -598,11 +598,11 @@ function updatePinButtonUI(isPinned) {
   if (isPinned) {
     elements.pinNoteBtn.classList.add('active');
     elements.pinNoteBtn.innerHTML = '<i class="fa-solid fa-thumbtack"></i>';
-    elements.pinNoteBtn.title = '取消釘選';
+    elements.pinNoteBtn.title = '已釘選（點擊取消釘選）';
   } else {
     elements.pinNoteBtn.classList.remove('active');
-    elements.pinNoteBtn.innerHTML = '<i class="fa-regular fa-thumbtack"></i>';
-    elements.pinNoteBtn.title = '釘選這篇筆記';
+    elements.pinNoteBtn.innerHTML = '<i class="fa-solid fa-thumbtack" style="opacity: 0.4;"></i>';
+    elements.pinNoteBtn.title = '點擊釘選這篇筆記';
   }
 }
 
