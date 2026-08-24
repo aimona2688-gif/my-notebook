@@ -240,29 +240,47 @@ function setupEventListeners() {
 
   // 📸 一鍵筆記截圖產出長圖功能 (Screenshot)
   elements.screenshotBtn.addEventListener('click', async () => {
-    if (!currentNoteId) return;
-    const note = await db.notes.get(currentNoteId);
-    const title = note ? (note.title || '筆記') : '筆記';
+    if (!currentNoteId) {
+      alert('請先點選或新增一篇筆記再進行截圖！');
+      return;
+    }
 
     try {
       elements.saveStatus.className = 'saving';
-      elements.saveStatus.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 畫面截圖中...';
+      elements.saveStatus.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 長圖截圖生成中...';
 
-      const editorEl = document.querySelector('.editor-wrapper');
+      // 取得編輯器 DOM 區域
+      const editorEl = document.getElementById('editor-container');
+      const noteTitle = elements.titleInput.value.trim() || '筆記';
+
+      // 檢查是否成功載入 html2canvas
+      if (typeof html2canvas === 'undefined') {
+        throw new Error('截圖元件正在載入中，請重新整理網頁後再試！');
+      }
+
       const canvas = await html2canvas(editorEl, {
         scale: 2,
         useCORS: true,
-        backgroundColor: document.body.classList.contains('light-theme') ? '#ffffff' : '#0f172a'
+        logging: false,
+        backgroundColor: document.body.classList.contains('light-theme') ? '#ffffff' : '#1e293b'
       });
 
-      canvas.toBlob((blob) => {
-        saveAs(blob, `${title}_截圖.png`);
-        elements.saveStatus.className = 'saved';
-        elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 已截圖保存！';
-      });
+      // 轉換成圖片並觸發下載
+      const imgData = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = `${noteTitle}_筆記截圖.png`;
+      link.href = imgData;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      elements.saveStatus.className = 'saved';
+      elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 截圖已下載成功！';
     } catch (err) {
       console.error('截圖失敗:', err);
-      alert('截圖時發生錯誤，請重試！');
+      alert('截圖失敗：' + (err.message || '請確認網頁載入完成。'));
+      elements.saveStatus.className = 'saved';
+      elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 已儲存';
     }
   });
 
