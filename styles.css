@@ -760,25 +760,19 @@ body, html {
   color: var(--text-primary) !important;
 }
 
-/* 淺色模式下強制預設文字為深黑色 #0f172a */
+/* 淺色模式下強制預設所有文字與標籤為深黑色 #0f172a */
 body.light-theme .ql-editor, 
-body.light-theme .ql-editor p, 
-body.light-theme .ql-editor span, 
-body.light-theme .ql-editor li, 
-body.light-theme .ql-editor h1, 
-body.light-theme .ql-editor h2, 
-body.light-theme .ql-editor h3 {
+body.light-theme .ql-editor *, 
+body.light-theme #editor-container, 
+body.light-theme #editor-container * {
   color: #0f172a !important;
 }
 
-/* 深色模式下強制預設文字為極致白 #f8fafc */
+/* 深色模式下強制預設所有文字與標籤為極致白 #f8fafc */
 body.dark-theme .ql-editor, 
-body.dark-theme .ql-editor p, 
-body.dark-theme .ql-editor span, 
-body.dark-theme .ql-editor li, 
-body.dark-theme .ql-editor h1, 
-body.dark-theme .ql-editor h2, 
-body.dark-theme .ql-editor h3 {
+body.dark-theme .ql-editor *, 
+body.dark-theme #editor-container, 
+body.dark-theme #editor-container * {
   color: #f8fafc !important;
 }
 
