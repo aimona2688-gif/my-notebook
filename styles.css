@@ -661,6 +661,10 @@ body, html {
 }
 
 /* 編輯器內部元素樣式 (引用區塊、程式碼區塊、連結) */
+.ql-editor {
+  color: var(--text-primary) !important;
+}
+
 .ql-editor blockquote {
   border-left: 4px solid var(--accent-color) !important;
   padding-left: 16px !important;
@@ -682,14 +686,19 @@ body, html {
   border: 1px solid var(--border-color);
 }
 
-.ql-editor a {
-  color: #818cf8 !important;
+/* 真正的超連結 (必須帶有 a[href] 且有明顯底線與手型游標) */
+.ql-editor a, .ql-editor a[href] {
+  color: #38bdf8 !important;
   text-decoration: underline !important;
-  font-weight: 500;
+  text-underline-offset: 3px;
+  font-weight: 600;
+  cursor: pointer !important;
+  transition: var(--transition-fast);
 }
 
 .ql-editor a:hover {
-  color: #c084fc !important;
+  color: #818cf8 !important;
+  text-decoration: underline !important;
 }
 
 .ql-editor {
