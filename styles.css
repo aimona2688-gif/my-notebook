@@ -391,10 +391,9 @@ body, html {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--border-color);
-  background-color: var(--glass-bg);
-  backdrop-filter: blur(10px);
+  background-color: var(--bg-secondary);
   position: relative;
-  z-index: 1000;
+  z-index: 9999;
 }
 
 .bar-left, .bar-right {
@@ -553,6 +552,8 @@ body, html {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  position: relative;
+  z-index: 1;
 }
 
 .ql-toolbar .ql-stroke {
