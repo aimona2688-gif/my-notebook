@@ -649,8 +649,27 @@ body, html {
   fill: var(--text-primary) !important;
 }
 
-.ql-toolbar .ql-picker {
+/* 修正下拉選單 (字體/標題/字級) 彈出的白底白字對比問題 */
+.ql-snow .ql-picker-options {
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--card-shadow) !important;
+  padding: 6px 0 !important;
+  z-index: 9999 !important;
+}
+
+.ql-snow .ql-picker-options .ql-picker-item {
   color: var(--text-primary) !important;
+  padding: 8px 12px !important;
+  font-size: 0.9rem !important;
+  transition: var(--transition-fast);
+}
+
+.ql-snow .ql-picker-options .ql-picker-item:hover,
+.ql-snow .ql-picker-options .ql-picker-item.ql-selected {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--accent-color) !important;
 }
 
 .custom-tb-btn {
