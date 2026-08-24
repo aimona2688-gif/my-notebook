@@ -448,6 +448,7 @@ body, html {
 .dropdown {
   position: relative;
   display: inline-block;
+  z-index: 1001;
 }
 
 .dropdown-content {
@@ -460,7 +461,7 @@ body, html {
   box-shadow: var(--card-shadow);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  z-index: 100;
+  z-index: 9999;
   overflow: hidden;
 }
 
