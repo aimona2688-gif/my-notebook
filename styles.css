@@ -95,6 +95,72 @@ body, html {
   margin-left: -320px;
 }
 
+.mobile-only {
+  display: none;
+}
+
+/* 📱 手機端極致自適應響應式優化 (Responsive Mobile Layout) */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+    height: 100vh;
+    height: -webkit-fill-available;
+  }
+
+  .sidebar {
+    position: fixed;
+    height: 100%;
+    width: 280px;
+    min-width: 280px;
+    left: 0;
+    top: 0;
+    box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+  }
+
+  .mobile-only {
+    display: flex !important;
+  }
+
+  .editor-wrapper {
+    padding: 12px 12px;
+  }
+
+  .title-input {
+    font-size: 1.4rem;
+  }
+
+  .top-bar {
+    padding: 0 12px;
+  }
+
+  #toolbar-container {
+    padding: 6px !important;
+    gap: 4px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ql-toolbar.ql-snow .ql-formats {
+    margin-right: 4px !important;
+    display: inline-flex !important;
+  }
+
+  /* 工具列選單手機版自適應縮小 */
+  .ql-snow .ql-picker.ql-header, .ql-snow .ql-picker.ql-size {
+    width: 75px !important;
+  }
+
+  #editor-container {
+    min-height: 250px;
+  }
+
+  .ql-editor {
+    padding: 12px !important;
+    font-size: 1rem;
+  }
+}
+
 .sidebar-header {
   padding: 20px;
   display: flex;
