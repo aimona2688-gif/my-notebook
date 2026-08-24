@@ -51,9 +51,8 @@ const elements = {
   exportTxt: document.getElementById('export-txt'),
   exportJson: document.getElementById('export-json'),
 
-  // 圖表、截圖、螢幕擷取與語音
+  // 圖表、螢幕擷取與語音
   insertChartBtn: document.getElementById('insert-chart-btn'),
-  screenshotBtn: document.getElementById('screenshot-btn'),
   screenCaptureBtn: document.getElementById('screen-capture-btn'),
   voiceInputBtn: document.getElementById('voice-input-btn'),
   chartModal: document.getElementById('chart-modal'),
@@ -236,52 +235,6 @@ function setupEventListeners() {
   elements.generateChartBtn.addEventListener('click', () => {
     generateChartAndInsert();
     hideChartModal();
-  });
-
-  // 📸 一鍵筆記截圖產出長圖功能 (Screenshot)
-  elements.screenshotBtn.addEventListener('click', async () => {
-    if (!currentNoteId) {
-      alert('請先點選或新增一篇筆記再進行截圖！');
-      return;
-    }
-
-    try {
-      elements.saveStatus.className = 'saving';
-      elements.saveStatus.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 長圖截圖生成中...';
-
-      // 取得編輯器 DOM 區域
-      const editorEl = document.getElementById('editor-container');
-      const noteTitle = elements.titleInput.value.trim() || '筆記';
-
-      // 檢查是否成功載入 html2canvas
-      if (typeof html2canvas === 'undefined') {
-        throw new Error('截圖元件正在載入中，請重新整理網頁後再試！');
-      }
-
-      const canvas = await html2canvas(editorEl, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        backgroundColor: document.body.classList.contains('light-theme') ? '#ffffff' : '#1e293b'
-      });
-
-      // 轉換成圖片並觸發下載
-      const imgData = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.download = `${noteTitle}_筆記截圖.png`;
-      link.href = imgData;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      elements.saveStatus.className = 'saved';
-      elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 截圖已下載成功！';
-    } catch (err) {
-      console.error('截圖失敗:', err);
-      alert('截圖失敗：' + (err.message || '請確認網頁載入完成。'));
-      elements.saveStatus.className = 'saved';
-      elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 已儲存';
-    }
   });
 
   // 🖥️ 擷取電腦螢幕/視窗畫面並直接插入筆記 (Screen Capture API)
