@@ -649,9 +649,23 @@ body, html {
   fill: var(--text-primary) !important;
 }
 
-/* 徹底修復 Quill 下拉選單 (字型、標題、字級) 白底白字對比問題 */
-.ql-snow .ql-picker {
-  color: var(--text-primary) !important;
+/* 修正下拉選單 (字型、標題、字級) 寬度與溢出對齊 */
+.ql-snow .ql-picker.ql-font {
+  width: 125px !important;
+}
+
+.ql-snow .ql-picker.ql-header {
+  width: 110px !important;
+}
+
+.ql-snow .ql-picker.ql-size {
+  width: 100px !important;
+}
+
+.ql-snow .ql-picker-label {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .ql-snow .ql-picker-label {
