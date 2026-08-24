@@ -126,21 +126,25 @@
 
         <!-- 自訂進階工具列與 Quill Editor 結合 -->
         <div id="toolbar-container">
-          <!-- 字體字型與字級大小選擇 (含豐富中英文字體) -->
+          <!-- 顏色調色盤 (原生色彩選擇器 100% 成功換色) -->
           <span class="ql-formats">
-            <select class="ql-font" title="選擇字型">
+            <input type="color" id="native-color-picker" value="#ffffff" title="選擇文字顏色" style="width:28px; height:28px; border:none; padding:0; background:none; cursor:pointer; vertical-align:middle;">
+            <input type="color" id="native-bg-picker" value="#6366f1" title="選擇文字螢光筆背景色" style="width:28px; height:28px; border:none; padding:0; background:none; cursor:pointer; vertical-align:middle;">
+          </span>
+
+          <!-- 字體字型 (選單 + 手動輸入電腦任一中英文字體名稱) -->
+          <span class="ql-formats">
+            <select class="ql-font" title="選擇預設字型">
               <option selected value="sans-serif">微軟正黑體 (Sans-Serif)</option>
-              <option value="serif">新細明體 / 標楷體 (Serif)</option>
+              <option value="serif">新細明體 (Serif)</option>
               <option value="kai">標楷體 (KaiTi)</option>
               <option value="arial">Arial (經典英文)</option>
               <option value="times">Times New Roman (正式英文)</option>
-              <option value="georgia">Georgia (報刊英文)</option>
-              <option value="courier">Courier New (等寬程式)</option>
-              <option value="impact">Impact (標題重磅體)</option>
-              <option value="verdana">Verdana (清晰英文)</option>
-              <option value="cursive">Comic Sans (活潑手寫體)</option>
             </select>
-            <select class="ql-header">
+            <button id="custom-font-input-btn" class="custom-tb-btn" title="🔤 輸入電腦中的任意字體名稱 (如: 華康少女文字, Segoe UI)">
+              <i class="fa-solid fa-font"></i>+
+            </button>
+          </span>
               <option value="1">標題 1 (特大)</option>
               <option value="2">標題 2 (大)</option>
               <option value="3">標題 3 (中)</option>

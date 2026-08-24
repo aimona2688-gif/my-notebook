@@ -51,7 +51,10 @@ const elements = {
   exportTxt: document.getElementById('export-txt'),
   exportJson: document.getElementById('export-json'),
 
-  // 圖表、截圖、螢幕擷取、復原與語音
+  // 原生色彩選擇器與自訂字體按鈕
+  nativeColorPicker: document.getElementById('native-color-picker'),
+  nativeBgPicker: document.getElementById('native-bg-picker'),
+  customFontInputBtn: document.getElementById('custom-font-input-btn'),
   insertChartBtn: document.getElementById('insert-chart-btn'),
   screenshotBtn: document.getElementById('screenshot-btn'),
   screenCaptureBtn: document.getElementById('screen-capture-btn'),
@@ -247,6 +250,33 @@ function setupEventListeners() {
     if (file) {
       insertImageFile(file);
       elements.imageFileInput.value = '';
+    }
+  });
+
+  // 🎨 原生全彩調色盤 (100% 成功即時換色)
+  elements.nativeColorPicker.addEventListener('input', (e) => {
+    const color = e.target.value;
+    quill.format('color', color);
+    triggerAutoSave();
+  });
+
+  elements.nativeBgPicker.addEventListener('input', (e) => {
+    const color = e.target.value;
+    quill.format('background', color);
+    triggerAutoSave();
+  });
+
+  // 🔤 載入電腦中任意中英文字體名稱
+  elements.customFontInputBtn.addEventListener('click', () => {
+    const fontName = prompt('請輸入您電腦中已安裝的字體名稱 (中英文皆可):\n例如: 華康少女文字, 標楷體, Segoe UI, Georgia, Consolas');
+    if (fontName && fontName.trim() !== '') {
+      const cleanFont = fontName.trim();
+      const range = quill.getSelection(true);
+      if (range) {
+        // 套用自訂 inline font-family 樣式
+        quill.formatText(range.index, range.length, 'font', cleanFont);
+        triggerAutoSave();
+      }
     }
   });
 
