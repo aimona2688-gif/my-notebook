@@ -48,7 +48,15 @@ const elements = {
   exportWord: document.getElementById('export-word'),
   exportHtml: document.getElementById('export-html'),
   exportTxt: document.getElementById('export-txt'),
-  exportJson: document.getElementById('export-json')
+  exportJson: document.getElementById('export-json'),
+
+  // 圖表與語音
+  insertChartBtn: document.getElementById('insert-chart-btn'),
+  voiceInputBtn: document.getElementById('voice-input-btn'),
+  chartModal: document.getElementById('chart-modal'),
+  closeChartModal: document.getElementById('close-chart-modal'),
+  cancelChartBtn: document.getElementById('cancel-chart-btn'),
+  generateChartBtn: document.getElementById('generate-chart-btn')
 };
 
 // 初始化應用程式
@@ -212,6 +220,60 @@ function setupEventListeners() {
     const range = quill.getSelection(true);
     quill.clipboard.dangerouslyPasteHTML(range.index, '<hr><p><br></p>');
   });
+
+  // 插入圖表 Modal
+  elements.insertChartBtn.addEventListener('click', () => {
+    elements.chartModal.classList.remove('hidden');
+  });
+
+  const hideChartModal = () => elements.chartModal.classList.add('hidden');
+  elements.closeChartModal.addEventListener('click', hideChartModal);
+  elements.cancelChartBtn.addEventListener('click', hideChartModal);
+
+  elements.generateChartBtn.addEventListener('click', () => {
+    generateChartAndInsert();
+    hideChartModal();
+  });
+
+  // 🎙️ 語音轉文字輸入 (Web Speech API)
+  let recognition = null;
+  let isRecording = false;
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.lang = 'zh-TW';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      const range = quill.getSelection(true) || { index: quill.getLength() };
+      quill.insertText(range.index, transcript + ' ');
+      quill.setSelection(range.index + transcript.length + 1);
+      triggerAutoSave();
+    };
+
+    recognition.onend = () => {
+      isRecording = false;
+      elements.voiceInputBtn.classList.remove('recording-active');
+      elements.voiceInputBtn.title = '🎙️ 語音轉文字輸入';
+    };
+
+    elements.voiceInputBtn.addEventListener('click', () => {
+      if (isRecording) {
+        recognition.stop();
+      } else {
+        recognition.start();
+        isRecording = true;
+        elements.voiceInputBtn.classList.add('recording-active');
+        elements.voiceInputBtn.title = '錄音中...請對麥克風說話';
+      }
+    });
+  } else {
+    elements.voiceInputBtn.addEventListener('click', () => {
+      alert('您的瀏覽器不支援語音辨識功能，建議使用 Chrome 或 Safari 瀏覽器！');
+    });
+  }
 
   // 匯出功能監聽
   elements.exportWord.addEventListener('click', (e) => {
@@ -531,6 +593,70 @@ async function exportToJson() {
   const jsonStr = JSON.stringify(allNotes, null, 2);
   const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8' });
   saveAs(blob, `AuraNote_Backup_${new Date().toISOString().slice(0, 10)}.json`);
+}
+
+// 動態生成 Chart.js 圖表並轉換為圖片插入 Quill 編輯器
+function generateChartAndInsert() {
+  const title = document.getElementById('chart-title-input').value.trim() || '統計圖表';
+  const type = document.getElementById('chart-type-select').value;
+  const labelsStr = document.getElementById('chart-labels-input').value.trim();
+  const dataStr = document.getElementById('chart-data-input').value.trim();
+
+  const labels = labelsStr.split(',').map(s => s.trim());
+  const data = dataStr.split(',').map(s => parseFloat(s.trim()) || 0);
+
+  if (labels.length === 0 || data.length === 0) {
+    alert('請輸入有效的圖表項目與數據！');
+    return;
+  }
+
+  // 隱藏的 Canvas 用於渲染圖表
+  const tempCanvas = document.createElement('canvas');
+  tempCanvas.width = 600;
+  tempCanvas.height = 350;
+  tempCanvas.style.display = 'none';
+  document.body.appendChild(tempCanvas);
+
+  const colors = [
+    '#6366f1', '#10b981', '#f59e0b', '#ef4444', 
+    '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'
+  ];
+
+  new Chart(tempCanvas, {
+    type: type,
+    data: {
+      labels: labels,
+      datasets: [{
+        label: title,
+        data: data,
+        backgroundColor: colors.slice(0, labels.length),
+        borderColor: '#ffffff',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: false,
+      animation: false,
+      plugins: {
+        title: {
+          display: true,
+          text: title,
+          font: { size: 18, weight: 'bold' }
+        }
+      }
+    }
+  });
+
+  // 等待圖表繪製完成轉成 Image Base64
+  setTimeout(() => {
+    const chartBase64 = tempCanvas.toDataURL('image/png');
+    document.body.removeChild(tempCanvas);
+
+    const range = quill.getSelection(true) || { index: quill.getLength() };
+    quill.insertEmbed(range.index, 'image', chartBase64);
+    quill.setSelection(range.index + 1);
+    triggerAutoSave();
+  }, 300);
 }
 
 // 輔助函式: 時間格式化

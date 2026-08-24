@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Quill Editor CSS -->
   <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+  <!-- Chart.js 圖表庫 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="styles.css">
   <!-- PWA Manifest & Theme Color -->
@@ -164,10 +166,16 @@
             <button class="ql-link" title="插入超連結"></button>
           </span>
 
-          <!-- 圖片上傳 (重點功能) -->
+          <!-- 圖片與進階工具 -->
           <span class="ql-formats">
             <button id="custom-image-btn" class="custom-tb-btn" title="插入本地圖片/照片">
               <i class="fa-solid fa-image"></i>
+            </button>
+            <button id="insert-chart-btn" class="custom-tb-btn" title="插入動態統計圖表">
+              <i class="fa-solid fa-chart-pie"></i>
+            </button>
+            <button id="voice-input-btn" class="custom-tb-btn" title="🎙️ 語音轉文字輸入">
+              <i class="fa-solid fa-microphone"></i>
             </button>
             <button id="insert-hr-btn" class="custom-tb-btn" title="插入分隔線">
               <i class="fa-solid fa-minus"></i>
@@ -195,6 +203,43 @@
         <div id="editor-container"></div>
       </div>
     </main>
+  </div>
+
+  <!-- 圖表產生器彈出視窗 Modal -->
+  <div id="chart-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-chart-pie"></i> 建立統計圖表</h3>
+        <button id="close-chart-modal" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>圖表標題：</label>
+          <input type="text" id="chart-title-input" value="月度支出統計" placeholder="輸入圖表標題">
+        </div>
+        <div class="form-group">
+          <label>圖表類型：</label>
+          <select id="chart-type-select">
+            <option value="bar">長條圖 (Bar Chart)</option>
+            <option value="pie" selected>圓餅圖 (Pie Chart)</option>
+            <option value="line">折線圖 (Line Chart)</option>
+            <option value="doughnut">環狀圖 (Doughnut)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>資料項目 (以逗號分隔)：</label>
+          <input type="text" id="chart-labels-input" value="飲食, 交通, 娛樂, 購物" placeholder="例: 項目A, 項目B, 項目C">
+        </div>
+        <div class="form-group">
+          <label>數值數據 (以逗號分隔)：</label>
+          <input type="text" id="chart-data-input" value="12000, 3500, 5000, 8000" placeholder="例: 100, 200, 300">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancel-chart-btn" class="theme-btn">取消</button>
+        <button id="generate-chart-btn" class="primary-btn"><i class="fa-solid fa-check"></i> 生成並插入圖表</button>
+      </div>
+    </div>
   </div>
 
   <!-- 引用程式庫 -->
