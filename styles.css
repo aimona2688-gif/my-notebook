@@ -622,13 +622,17 @@ body, html {
 }
 
 /* Customizing Quill Toolbar & Container */
-/* 字級大小與字型變化設定 */
+/* 字級大小與多種電腦字型 (System Fonts) 設定 */
 .ql-editor .ql-size-small { font-size: 0.75rem !important; }
 .ql-editor .ql-size-large { font-size: 1.3rem !important; }
 .ql-editor .ql-size-huge { font-size: 1.85rem !important; }
 
-.ql-editor .ql-font-serif { font-family: 'Noto Serif TC', Georgia, serif !important; }
-.ql-editor .ql-font-monospace { font-family: 'Fira Code', 'Courier New', monospace !important; }
+.ql-editor .ql-font-sans-serif { font-family: 'Microsoft JhengHei', 'Noto Sans TC', sans-serif !important; }
+.ql-editor .ql-font-serif { font-family: 'PMingLiU', 'DFKai-SB', 'Noto Serif TC', serif !important; }
+.ql-editor .ql-font-kai { font-family: 'DFKai-SB', 'BiauKai', 'KaiTi', serif !important; }
+.ql-editor .ql-font-monospace { font-family: 'Consolas', 'Courier New', monospace !important; }
+.ql-editor .ql-font-cursive { font-family: 'Comic Sans MS', 'DFKai-SB', cursive !important; }
+.ql-editor .ql-font-arial { font-family: 'Arial', 'Helvetica', sans-serif !important; }
 
 #toolbar-container {
   border: 1px solid var(--border-color) !important;
@@ -761,7 +765,7 @@ body, html {
   color: var(--text-primary) !important;
 }
 
-/* 編輯器預設文字顏色 (允許使用者透過調色盤自訂顏色) */
+/* 編輯器文字顏色 - 極致靈活相容性 (預設依主題，調色盤優先) */
 .ql-editor {
   color: var(--text-primary);
   caret-color: var(--text-primary);
@@ -779,23 +783,11 @@ body.dark-theme .ql-editor {
   caret-color: #f8fafc;
 }
 
-/* 只有當元素沒有自訂 inline style 顏色時，才套用預設黑/白 */
-body.light-theme .ql-editor p:not([style*="color"]),
-body.light-theme .ql-editor span:not([style*="color"]),
-body.light-theme .ql-editor li:not([style*="color"]),
-body.light-theme .ql-editor h1:not([style*="color"]),
-body.light-theme .ql-editor h2:not([style*="color"]),
-body.light-theme .ql-editor h3:not([style*="color"]) {
-  color: #0f172a;
-}
-
-body.dark-theme .ql-editor p:not([style*="color"]),
-body.dark-theme .ql-editor span:not([style*="color"]),
-body.dark-theme .ql-editor li:not([style*="color"]),
-body.dark-theme .ql-editor h1:not([style*="color"]),
-body.dark-theme .ql-editor h2:not([style*="color"]),
-body.dark-theme .ql-editor h3:not([style*="color"]) {
-  color: #f8fafc;
+/* 允許 Quill 調色盤產生的 span[style*="color"] 擁有最高優先權 */
+.ql-editor span[style*="color"],
+.ql-editor p[style*="color"],
+.ql-editor font[color] {
+  color: inherit;
 }
 
 /* 只有帶有 href 屬性的超連結才顯示為藍色+底線 */

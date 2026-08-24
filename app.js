@@ -84,6 +84,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // 初始化 Quill 編輯器
 function initQuillEditor() {
+  // 註冊自訂多種電腦系統字體 (System Fonts)
+  const Font = Quill.import('formats/font');
+  Font.whitelist = ['sans-serif', 'serif', 'kai', 'monospace', 'cursive', 'arial'];
+  Quill.register(Font, true);
+
   quill = new Quill('#editor-container', {
     modules: {
       toolbar: '#toolbar-container'
