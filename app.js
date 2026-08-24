@@ -245,38 +245,57 @@ function setupEventListeners() {
       return;
     }
 
+    const noteTitle = elements.titleInput.value.trim() || '筆記';
+
     try {
       elements.saveStatus.className = 'saving';
-      elements.saveStatus.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 長圖截圖生成中...';
+      elements.saveStatus.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 生成筆記圖片中...';
 
-      // 取得編輯器 DOM 區域
       const editorEl = document.getElementById('editor-container');
-      const noteTitle = elements.titleInput.value.trim() || '筆記';
 
-      if (typeof html2canvas === 'undefined') {
-        throw new Error('截圖元件正在載入中，請重新整理網頁後再試！');
+      // 使用原生或 html2canvas 繪製
+      if (typeof html2canvas === 'function') {
+        const canvas = await html2canvas(editorEl, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: document.body.classList.contains('light-theme') ? '#ffffff' : '#1e293b'
+        });
+
+        // 通用下載方案 (解決 iOS/Android/桌面下載相容性)
+        if (navigator.share && /mobile/i.test(navigator.userAgent)) {
+          // 手機版支援直接分享到相簿/LINE
+          canvas.toBlob(async (blob) => {
+            const file = new File([blob], `${noteTitle}_筆記截圖.png`, { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+              try {
+                await navigator.share({ files: [file], title: noteTitle });
+                elements.saveStatus.className = 'saved';
+                elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 已分享/儲存截圖！';
+                return;
+              } catch (e) {}
+            }
+            // 備用觸發下載
+            saveAs(blob, `${noteTitle}_筆記截圖.png`);
+            elements.saveStatus.className = 'saved';
+            elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 截圖下載成功！';
+          });
+        } else {
+          // 電腦版傳統下載
+          canvas.toBlob((blob) => {
+            saveAs(blob, `${noteTitle}_筆記截圖.png`);
+            elements.saveStatus.className = 'saved';
+            elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 截圖下載成功！';
+          });
+        }
+      } else {
+        alert('截圖套件載入中，請重新整理頁面後再試！');
+        elements.saveStatus.className = 'saved';
+        elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 已儲存';
       }
-
-      const canvas = await html2canvas(editorEl, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        backgroundColor: document.body.classList.contains('light-theme') ? '#ffffff' : '#1e293b'
-      });
-
-      const imgData = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.download = `${noteTitle}_筆記截圖.png`;
-      link.href = imgData;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      elements.saveStatus.className = 'saved';
-      elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 截圖已下載成功！';
     } catch (err) {
       console.error('截圖失敗:', err);
-      alert('截圖失敗：' + (err.message || '請確認網頁載入完成。'));
+      alert('截圖發生錯誤: ' + err.message);
       elements.saveStatus.className = 'saved';
       elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 已儲存';
     }
