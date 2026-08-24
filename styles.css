@@ -622,17 +622,17 @@ body, html {
 }
 
 /* Customizing Quill Toolbar & Container */
-/* 字級大小與多種電腦字型 (System Fonts) 設定 */
-.ql-editor .ql-size-small { font-size: 0.75rem !important; }
-.ql-editor .ql-size-large { font-size: 1.3rem !important; }
-.ql-editor .ql-size-huge { font-size: 1.85rem !important; }
-
+/* 字級大小與多種中英文系統字型 (System Fonts) 設定 */
 .ql-editor .ql-font-sans-serif { font-family: 'Microsoft JhengHei', 'Noto Sans TC', sans-serif !important; }
-.ql-editor .ql-font-serif { font-family: 'PMingLiU', 'DFKai-SB', 'Noto Serif TC', serif !important; }
+.ql-editor .ql-font-serif { font-family: 'PMingLiU', 'Noto Serif TC', serif !important; }
 .ql-editor .ql-font-kai { font-family: 'DFKai-SB', 'BiauKai', 'KaiTi', serif !important; }
-.ql-editor .ql-font-monospace { font-family: 'Consolas', 'Courier New', monospace !important; }
-.ql-editor .ql-font-cursive { font-family: 'Comic Sans MS', 'DFKai-SB', cursive !important; }
 .ql-editor .ql-font-arial { font-family: 'Arial', 'Helvetica', sans-serif !important; }
+.ql-editor .ql-font-times { font-family: 'Times New Roman', 'Times', serif !important; }
+.ql-editor .ql-font-georgia { font-family: 'Georgia', serif !important; }
+.ql-editor .ql-font-courier { font-family: 'Courier New', 'Courier', monospace !important; }
+.ql-editor .ql-font-impact { font-family: 'Impact', 'Charcoal', sans-serif !important; }
+.ql-editor .ql-font-verdana { font-family: 'Verdana', 'Geneva', sans-serif !important; }
+.ql-editor .ql-font-cursive { font-family: 'Comic Sans MS', 'DFKai-SB', cursive !important; }
 
 #toolbar-container {
   border: 1px solid var(--border-color) !important;
