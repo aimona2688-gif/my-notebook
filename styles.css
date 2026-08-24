@@ -765,7 +765,7 @@ body, html {
   color: var(--text-primary) !important;
 }
 
-/* 編輯器文字顏色 - 極致靈活相容性 (預設依主題，調色盤優先) */
+/* 編輯器文字顏色與調色盤原生完美相容 */
 .ql-editor {
   color: var(--text-primary);
   caret-color: var(--text-primary);
@@ -781,13 +781,6 @@ body.dark-theme #editor-container,
 body.dark-theme .ql-editor {
   color: #f8fafc;
   caret-color: #f8fafc;
-}
-
-/* 允許 Quill 調色盤產生的 span[style*="color"] 擁有最高優先權 */
-.ql-editor span[style*="color"],
-.ql-editor p[style*="color"],
-.ql-editor font[color] {
-  color: inherit;
 }
 
 /* 只有帶有 href 屬性的超連結才顯示為藍色+底線 */
