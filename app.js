@@ -118,27 +118,25 @@ function initQuillEditor() {
   });
 }
 
-// 建立示範筆記 (高級質感彩化視覺版)
+// 建立示範筆記 (原版高質感彩色美學版)
 async function createDemoNote() {
   const demoNote = {
     id: 'demo-note-' + Date.now(),
     title: '👋 歡迎使用 Aura Note 尊榮筆記本',
-    content: `<h1 style="color: #818cf8; font-size: 26px; font-weight: 700; border-bottom: 2px solid #6366f1; padding-bottom: 8px; margin-bottom: 16px;">✨ 專屬於你的強大個人筆記工具</h1>
-<p style="font-size: 16px; color: #cbd5e1; line-height: 1.8;">這是一款結合高質感視覺介面、強大富文本編輯、<strong>Word (.docx) / PDF 匯出</strong>、<strong>動態圖表</strong>與<strong>語音輸入</strong>的極致個人筆記軟體。</p>
-<hr style="border: none; border-top: 1px solid #334155; margin: 20px 0;">
-<h3 style="color: #38bdf8; font-size: 18px; margin-bottom: 12px;">💡 核心功能實用指南：</h3>
-<ul style="padding-left: 20px; line-height: 2;">
-  <li><strong style="color: #818cf8;">🎨 字體與顏色控制</strong>：在上方工具列輕鬆變更字體大小、文字顏色與螢光筆畫線。</li>
-  <li><strong style="color: #34d399;">🖼️ 本地圖片與電腦截圖</strong>：點擊 🖼️ 圖示上傳照片、拖拽圖片進編輯區，或點擊 🖥️ 截取電腦畫面！</li>
-  <li><strong style="color: #fbbf24;">📄 一鍵匯出 Word / PDF</strong>：點擊右上角的「匯出檔案」按鈕，即可將筆記打包為標準 <code style="background:#1e293b; color:#38bdf8; padding:2px 6px; border-radius:4px;">.docx</code> 或 PDF 檔案。</li>
-  <li><strong style="color: #f87171;">🔍 全文搜尋與釘選</strong>：左側邊欄支援即時搜尋標題與內文，點擊 📌 圖釘按鈕可置頂筆記。</li>
-  <li><strong style="color: #c084fc;">🔗 智能超連結</strong>：用滑鼠框選文字點擊 🔗 即可加入帶有亮藍底線的網頁超連結 (例如: <a href="https://www.google.com" target="_blank" style="color:#38bdf8; text-decoration:underline;">Google 搜尋</a>)。</li>
+    content: `<h1>✨ 專屬於你的強大個人筆記工具</h1>
+<p>這是一款結合高質感視覺介面、強大編輯功能與 <strong>Word (.docx) / PDF 匯出</strong> 功能的離線筆記軟體。</p>
+<hr>
+<h3>💡 核心功能指南：</h3>
+<ul>
+  <li><strong style="color: rgb(99, 102, 241);">字體與顏色調整</strong>：在上方工具列輕鬆變更字體大小、文字顏色與螢光筆畫線。</li>
+  <li><strong style="color: rgb(16, 185, 129);">圖片與電腦截圖</strong>：點擊工具列圖示上傳照片、拖拽圖片進編輯區，或點擊 🖥️ 擷取電腦畫面！</li>
+  <li><strong style="color: rgb(245, 158, 11);">一鍵匯出 Word / PDF</strong>：點擊右上角的「匯出檔案」按鈕，即可將包含樣式與圖片的筆記下載為標準 .docx 或 PDF 檔案。</li>
+  <li><strong style="color: rgb(239, 68, 68);">全文搜尋與釘選</strong>：左側邊欄支援即時搜尋標題與內文關鍵字，點擊 📌 可置頂筆記。</li>
+  <li><strong style="color: rgb(168, 85, 247);">智能超連結</strong>：用滑鼠框選文字點擊 🔗 即可加入藍字底線超連結 (例如: <a href="https://www.google.com" target="_blank">Google 搜尋</a>)。</li>
 </ul>
-<br>
-<blockquote style="border-left: 4px solid #6366f1; background: rgba(99, 102, 241, 0.1); padding: 12px 16px; color: #94a3b8; border-radius: 0 8px 8px 0; font-style: italic;">
-  提示：所有筆記數據皆安全保存在您的本地瀏覽器 IndexedDB 中，離線也能順暢使用！
-</blockquote>`,
-    tags: ['歡迎', '教學', 'Word匯出', '高級質感'],
+<p><br></p>
+<p><em>提示：所有筆記數據皆安全保存在您的本地瀏覽器 IndexedDB 中，離線也能順暢使用！</em></p>`,
+    tags: ['歡迎', '教學', 'Word匯出', '尊榮質感'],
     isPinned: true,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
