@@ -116,25 +116,25 @@ function initQuillEditor() {
   });
 }
 
-// 建立示範筆記 (原版高質感彩色美學版)
+// 建立示範筆記 (極致簡約純白質感版)
 async function createDemoNote() {
   const demoNote = {
     id: 'demo-note-' + Date.now(),
     title: '👋 歡迎使用 Aura Note 尊榮筆記本',
-    content: `<h1>✨ 專屬於你的強大個人筆記工具</h1>
+    content: `<h1 style="color: #ffffff;">✨ 專屬於你的強大個人筆記工具</h1>
 <p>這是一款結合高質感視覺介面、強大編輯功能與 <strong>Word (.docx) / PDF 匯出</strong> 功能的離線筆記軟體。</p>
 <hr>
 <h3>💡 核心功能指南：</h3>
 <ul>
-  <li><strong style="color: rgb(99, 102, 241);">字體與顏色調整</strong>：在上方工具列輕鬆變更字體大小、文字顏色與螢光筆畫線。</li>
-  <li><strong style="color: rgb(16, 185, 129);">圖片與電腦截圖</strong>：點擊工具列圖示上傳照片、拖拽圖片進編輯區，或點擊 🖥️ 擷取電腦畫面！</li>
-  <li><strong style="color: rgb(245, 158, 11);">一鍵匯出 Word / PDF</strong>：點擊右上角的「匯出檔案」按鈕，即可將包含樣式與圖片的筆記下載為標準 .docx 或 PDF 檔案。</li>
-  <li><strong style="color: rgb(239, 68, 68);">全文搜尋與釘選</strong>：左側邊欄支援即時搜尋標題與內文關鍵字，點擊 📌 可置頂筆記。</li>
-  <li><strong style="color: rgb(168, 85, 247);">智能超連結</strong>：用滑鼠框選文字點擊 🔗 即可加入藍字底線超連結 (例如: <a href="https://www.google.com" target="_blank">Google 搜尋</a>)。</li>
+  <li><strong>字體與顏色調整</strong>：在上方工具列輕鬆變更字體大小、文字顏色與螢光筆畫線。</li>
+  <li><strong>圖片與電腦截圖</strong>：點擊工具列圖示上傳照片、拖拽圖片進編輯區，或點擊 🖥️ 擷取電腦畫面！</li>
+  <li><strong>一鍵匯出 Word / PDF</strong>：點擊右上角的「匯出檔案」按鈕，即可將包含樣式與圖片的筆記下載為標準 .docx 或 PDF 檔案。</li>
+  <li><strong>全文搜尋與釘選</strong>：左側邊欄支援即時搜尋標題與內文關鍵字，點擊 📌 可置頂筆記。</li>
+  <li><strong>智能超連結</strong>：用滑鼠框選文字點擊 🔗 即可加入藍字底線超連結 (例如: <a href="https://www.google.com" target="_blank">Google 搜尋</a>)。</li>
 </ul>
 <p><br></p>
 <p><em>提示：所有筆記數據皆安全保存在您的本地瀏覽器 IndexedDB 中，離線也能順暢使用！</em></p>`,
-    tags: ['歡迎', '教學', 'Word匯出', '尊榮質感'],
+    tags: ['歡迎', '教學', 'Word匯出'],
     isPinned: true,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()

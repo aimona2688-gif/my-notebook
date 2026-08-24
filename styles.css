@@ -686,14 +686,24 @@ body, html {
   border: 1px solid var(--border-color);
 }
 
-/* 真正的超連結 (必須帶有 a[href] 且有明顯底線與手型游標) */
-.ql-editor a, .ql-editor a[href] {
+/* 編輯器內部元素樣式 (強制預設為極致質感純白色文字 #f8fafc) */
+.ql-editor, 
+.ql-editor p, 
+.ql-editor span, 
+.ql-editor li, 
+.ql-editor h1, 
+.ql-editor h2, 
+.ql-editor h3 {
+  color: #f8fafc !important;
+}
+
+/* 只有帶有 href 屬性的超連結才顯示為藍色+底線 */
+.ql-editor a[href] {
   color: #38bdf8 !important;
   text-decoration: underline !important;
   text-underline-offset: 3px;
   font-weight: 600;
   cursor: pointer !important;
-  transition: var(--transition-fast);
 }
 
 .ql-editor a:hover {
