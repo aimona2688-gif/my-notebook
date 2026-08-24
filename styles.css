@@ -590,6 +590,7 @@ body, html {
   color: var(--text-primary);
   font-family: var(--font-family);
   margin-bottom: 8px;
+  caret-color: var(--text-primary);
 }
 
 .title-input::placeholder {
@@ -760,20 +761,22 @@ body, html {
   color: var(--text-primary) !important;
 }
 
-/* 淺色模式下強制預設所有文字與標籤為深黑色 #0f172a */
+/* 淺色模式下強制預設所有文字、游標與標籤為深黑色 #0f172a */
 body.light-theme .ql-editor, 
 body.light-theme .ql-editor *, 
 body.light-theme #editor-container, 
 body.light-theme #editor-container * {
   color: #0f172a !important;
+  caret-color: #0f172a !important;
 }
 
-/* 深色模式下強制預設所有文字與標籤為極致白 #f8fafc */
+/* 深色模式下強制預設所有文字、游標與標籤為極致白 #f8fafc */
 body.dark-theme .ql-editor, 
 body.dark-theme .ql-editor *, 
 body.dark-theme #editor-container, 
 body.dark-theme #editor-container * {
   color: #f8fafc !important;
+  caret-color: #f8fafc !important;
 }
 
 /* 只有帶有 href 屬性的超連結才顯示為藍色+底線 */
