@@ -124,33 +124,17 @@
           </div>
         </div>
 
-        <!-- 自訂進階工具列與 Quill Editor 結合 -->
+        <!-- 穩定高品質工具列 (按完美順序排列) -->
         <div id="toolbar-container">
-          <!-- 顏色與畫線 (原版美觀調色盤) -->
+          <!-- 1. 標題層級與字體大小 -->
           <span class="ql-formats">
-            <select class="ql-color" title="文字顏色"></select>
-            <select class="ql-background" title="文字背景螢光筆"></select>
-          </span>
-
-          <!-- 字體字型 (選單 + 手動輸入電腦任一中英文字體名稱) -->
-          <span class="ql-formats">
-            <select class="ql-font" title="選擇預設字型">
-              <option selected value="sans-serif">微軟正黑體 (Sans-Serif)</option>
-              <option value="serif">新細明體 (Serif)</option>
-              <option value="kai">標楷體 (KaiTi)</option>
-              <option value="arial">Arial (經典英文)</option>
-              <option value="times">Times New Roman (正式英文)</option>
-            </select>
-            <button id="custom-font-input-btn" class="custom-tb-btn" title="🔤 輸入電腦中的任意字體名稱 (如: 華康少女文字, Segoe UI)">
-              <i class="fa-solid fa-font"></i>+
-            </button>
-          </span>
-              <option value="1">標題 1 (特大)</option>
-              <option value="2">標題 2 (大)</option>
-              <option value="3">標題 3 (中)</option>
+            <select class="ql-header">
+              <option value="1">標題 1 (大)</option>
+              <option value="2">標題 2 (中)</option>
+              <option value="3">標題 3 (小)</option>
               <option selected>一般內文</option>
             </select>
-            <select class="ql-size" title="字級大小">
+            <select class="ql-size">
               <option value="small">小字體</option>
               <option selected>正常字體</option>
               <option value="large">大字體</option>
@@ -158,7 +142,7 @@
             </select>
           </span>
 
-          <!-- 復原與重做 (Undo / Redo) -->
+          <!-- 2. 復原與重做 (Undo / Redo) -->
           <span class="ql-formats">
             <button id="custom-undo-btn" class="custom-tb-btn" title="復原 / 上一步 (Ctrl+Z)">
               <i class="fa-solid fa-rotate-left"></i>
@@ -168,7 +152,7 @@
             </button>
           </span>
 
-          <!-- 基本文字格式 -->
+          <!-- 3. 基本文字格式 -->
           <span class="ql-formats">
             <button class="ql-bold" title="粗體 (Ctrl+B)"></button>
             <button class="ql-italic" title="斜體 (Ctrl+I)"></button>
@@ -176,13 +160,13 @@
             <button class="ql-strike" title="刪除線"></button>
           </span>
 
-          <!-- 顏色與畫線 -->
+          <!-- 4. 顏色與螢光筆 (原版極致穩定美觀色塊選單) -->
           <span class="ql-formats">
             <select class="ql-color" title="文字顏色"></select>
             <select class="ql-background" title="文字背景螢光筆"></select>
           </span>
 
-          <!-- 清單與對齊 -->
+          <!-- 5. 清單與對齊 -->
           <span class="ql-formats">
             <button class="ql-list" value="ordered" title="編號列表"></button>
             <button class="ql-list" value="bullet" title="項目符號"></button>
@@ -190,14 +174,14 @@
             <select class="ql-align" title="對齊方式"></select>
           </span>
 
-          <!-- 區塊與連結 -->
+          <!-- 6. 區塊與超連結 -->
           <span class="ql-formats">
             <button class="ql-blockquote" title="引用區塊"></button>
             <button class="ql-code-block" title="程式碼區塊"></button>
             <button class="ql-link" title="插入超連結"></button>
           </span>
 
-          <!-- 圖片與進階工具 -->
+          <!-- 7. 圖片、圖表、截圖與語音 -->
           <span class="ql-formats">
             <button id="custom-image-btn" class="custom-tb-btn" title="插入本地圖片/照片">
               <i class="fa-solid fa-image"></i>
@@ -219,7 +203,7 @@
             </button>
           </span>
 
-          <!-- 清除格式 -->
+          <!-- 8. 清除格式 -->
           <span class="ql-formats">
             <button class="ql-clean" title="清除格式"></button>
           </span>

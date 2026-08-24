@@ -51,10 +51,7 @@ const elements = {
   exportTxt: document.getElementById('export-txt'),
   exportJson: document.getElementById('export-json'),
 
-  // 原生色彩選擇器與自訂字體按鈕
-  nativeColorPicker: document.getElementById('native-color-picker'),
-  nativeBgPicker: document.getElementById('native-bg-picker'),
-  customFontInputBtn: document.getElementById('custom-font-input-btn'),
+  // 工具與語音
   insertChartBtn: document.getElementById('insert-chart-btn'),
   screenshotBtn: document.getElementById('screenshot-btn'),
   screenCaptureBtn: document.getElementById('screen-capture-btn'),
@@ -72,28 +69,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   initQuillEditor();
   setupEventListeners();
   setupDragAndDrop();
-  
-  // 自動清理之前不小心加上黑底/全藍的舊歡迎筆記
-  const allNotes = await db.notes.toArray();
-  for (let n of allNotes) {
-    if (n.title && n.title.includes('歡迎使用 Aura Note')) {
-      await db.notes.delete(n.id);
+
+  // 若資料庫為空，建立預設示範筆記
+  const count = await db.notes.count();
+  if (count === 0) {
+    await createDemoNote();
+  } else {
+    // 載入最新筆記
+    const firstNote = await db.notes.orderBy('updatedAt').reverse().first();
+    if (firstNote) {
+      await loadNoteToEditor(firstNote.id);
+    } else {
+      await createDemoNote();
     }
   }
-
-  await createDemoNote();
   await loadNotesList();
 });
 
-// 初始化 Quill 編輯器
+// 初始化 Quill 編輯器 (極致穩定版)
 function initQuillEditor() {
-  // 使用 Quill 內建原版 StyleAttributor (確保 HTML style="color: ..." 100% 寫入與套用)
-  const ColorStyle = Quill.import('attributors/style/color');
-  const BackgroundStyle = Quill.import('attributors/style/background');
-  
-  Quill.register(ColorStyle, true);
-  Quill.register(BackgroundStyle, true);
-
   quill = new Quill('#editor-container', {
     modules: {
       toolbar: '#toolbar-container'
@@ -126,25 +120,25 @@ function initQuillEditor() {
   });
 }
 
-// 建立示範筆記 (極致簡約純白質感版)
+// 建立示範筆記 (原版高質感美學版)
 async function createDemoNote() {
   const demoNote = {
     id: 'demo-note-' + Date.now(),
     title: '👋 歡迎使用 Aura Note 尊榮筆記本',
-    content: `<h1 style="color: #ffffff;">✨ 專屬於你的強大個人筆記工具</h1>
+    content: `<h1>✨ 專屬於你的強大個人筆記工具</h1>
 <p>這是一款結合高質感視覺介面、強大編輯功能與 <strong>Word (.docx) / PDF 匯出</strong> 功能的離線筆記軟體。</p>
 <hr>
 <h3>💡 核心功能指南：</h3>
 <ul>
-  <li><strong>字體與顏色調整</strong>：在上方工具列輕鬆變更字體大小、文字顏色與螢光筆畫線。</li>
-  <li><strong>圖片與電腦截圖</strong>：點擊工具列圖示上傳照片、拖拽圖片進編輯區，或點擊 🖥️ 擷取電腦畫面！</li>
-  <li><strong>一鍵匯出 Word / PDF</strong>：點擊右上角的「匯出檔案」按鈕，即可將包含樣式與圖片的筆記下載為標準 .docx 或 PDF 檔案。</li>
-  <li><strong>全文搜尋與釘選</strong>：左側邊欄支援即時搜尋標題與內文關鍵字，點擊 📌 可置頂筆記。</li>
-  <li><strong>智能超連結</strong>：用滑鼠框選文字點擊 🔗 即可加入藍字底線超連結 (例如: <a href="https://www.google.com" target="_blank">Google 搜尋</a>)。</li>
+  <li><strong style="color: rgb(99, 102, 241);">字體與顏色調整</strong>：在上方工具列輕鬆變更字體大小、文字顏色與螢光筆畫線。</li>
+  <li><strong style="color: rgb(16, 185, 129);">圖片與電腦截圖</strong>：點擊工具列圖示上傳照片、拖拽圖片進編輯區，或點擊 🖥️ 擷取電腦畫面！</li>
+  <li><strong style="color: rgb(245, 158, 11);">一鍵匯出 Word / PDF</strong>：點擊右上角的「匯出檔案」按鈕，即可將包含樣式與圖片的筆記下載為標準 .docx 或 PDF 檔案。</li>
+  <li><strong style="color: rgb(239, 68, 68);">全文搜尋與釘選</strong>：左側邊欄支援即時搜尋標題與內文關鍵字，點擊 📌 可置頂筆記。</li>
+  <li><strong style="color: rgb(168, 85, 247);">智能超連結</strong>：用滑鼠框選文字點擊 🔗 即可加入藍字底線超連結 (例如: <a href="https://www.google.com" target="_blank">Google 搜尋</a>)。</li>
 </ul>
 <p><br></p>
 <p><em>提示：所有筆記數據皆安全保存在您的本地瀏覽器 IndexedDB 中，離線也能順暢使用！</em></p>`,
-    tags: ['歡迎', '教學', 'Word匯出'],
+    tags: ['歡迎', '教學', 'Word匯出', '尊榮質感'],
     isPinned: true,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
@@ -157,7 +151,6 @@ async function createDemoNote() {
 
 // 監聽事件註冊
 function setupEventListeners() {
-  // 側邊欄開關
   elements.toggleSidebarBtn.addEventListener('click', () => {
     elements.sidebar.classList.toggle('collapsed');
   });
@@ -166,14 +159,11 @@ function setupEventListeners() {
     elements.sidebar.classList.toggle('collapsed');
   });
 
-  // 新建筆記
   elements.newNoteBtn.addEventListener('click', () => createNewNote());
 
-  // 標題與標籤變更觸發自動儲存
   elements.titleInput.addEventListener('input', triggerAutoSave);
   elements.tagsInput.addEventListener('change', triggerAutoSave);
 
-  // 釘選切換
   elements.pinNoteBtn.addEventListener('click', async () => {
     if (!currentNoteId) return;
     const note = await db.notes.get(currentNoteId);
@@ -185,7 +175,6 @@ function setupEventListeners() {
     }
   });
 
-  // 刪除筆記
   elements.deleteNoteBtn.addEventListener('click', async () => {
     if (!currentNoteId) return;
     if (confirm('確定要刪除這篇筆記嗎？此操作無法復原。')) {
@@ -201,7 +190,6 @@ function setupEventListeners() {
     }
   });
 
-  // 搜尋功能
   elements.searchInput.addEventListener('input', (e) => {
     const query = e.target.value.trim();
     elements.clearSearchBtn.classList.toggle('hidden', query === '');
@@ -214,7 +202,6 @@ function setupEventListeners() {
     loadNotesList();
   });
 
-  // 分頁切換 (全部/釘選)
   elements.filterTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       elements.filterTabs.forEach(t => t.classList.remove('active'));
@@ -224,16 +211,15 @@ function setupEventListeners() {
     });
   });
 
-  // 主題切換 (深色/淺色)
   elements.themeToggleBtn.addEventListener('click', () => {
     document.body.classList.toggle('light-theme');
+    document.body.classList.toggle('dark-theme');
     const isLight = document.body.classList.contains('light-theme');
     elements.themeToggleBtn.innerHTML = isLight 
       ? '<i class="fa-solid fa-sun"></i> 淺色模式' 
       : '<i class="fa-solid fa-moon"></i> 深色模式';
   });
 
-  // 插入圖片按鈕觸發
   elements.customImageBtn.addEventListener('click', () => {
     elements.imageFileInput.click();
   });
@@ -246,34 +232,6 @@ function setupEventListeners() {
     }
   });
 
-  // 🎨 原生全彩調色盤 (100% 成功即時換色)
-  elements.nativeColorPicker.addEventListener('input', (e) => {
-    const color = e.target.value;
-    quill.format('color', color);
-    triggerAutoSave();
-  });
-
-  elements.nativeBgPicker.addEventListener('input', (e) => {
-    const color = e.target.value;
-    quill.format('background', color);
-    triggerAutoSave();
-  });
-
-  // 🔤 載入電腦中任意中英文字體名稱
-  elements.customFontInputBtn.addEventListener('click', () => {
-    const fontName = prompt('請輸入您電腦中已安裝的字體名稱 (中英文皆可):\n例如: 華康少女文字, 標楷體, Segoe UI, Georgia, Consolas');
-    if (fontName && fontName.trim() !== '') {
-      const cleanFont = fontName.trim();
-      const range = quill.getSelection(true);
-      if (range) {
-        // 套用自訂 inline font-family 樣式
-        quill.formatText(range.index, range.length, 'font', cleanFont);
-        triggerAutoSave();
-      }
-    }
-  });
-
-  // 🔄 復原 (Undo) 與 重做 (Redo) 歷史紀錄功能
   elements.customUndoBtn.addEventListener('click', () => {
     quill.history.undo();
   });
@@ -282,13 +240,11 @@ function setupEventListeners() {
     quill.history.redo();
   });
 
-  // 插入分隔線
   elements.insertHrBtn.addEventListener('click', () => {
     const range = quill.getSelection(true);
     quill.clipboard.dangerouslyPasteHTML(range.index, '<hr><p><br></p>');
   });
 
-  // 插入圖表 Modal
   elements.insertChartBtn.addEventListener('click', () => {
     elements.chartModal.classList.remove('hidden');
   });
@@ -302,7 +258,7 @@ function setupEventListeners() {
     hideChartModal();
   });
 
-  // 📸 一鍵筆記截圖產出長圖功能 (Screenshot)
+  // 📸 一鍵長圖下載
   elements.screenshotBtn.addEventListener('click', async () => {
     if (!currentNoteId) return;
     const note = await db.notes.get(currentNoteId);
@@ -333,7 +289,7 @@ function setupEventListeners() {
     }
   });
 
-  // 🖥️ 擷取電腦螢幕/視窗畫面並直接插入筆記 (Screen Capture API)
+  // 🖥️ 電腦畫面截圖並插入
   elements.screenCaptureBtn.addEventListener('click', async () => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
       alert('您的瀏覽器不支援直接螢幕擷取功能，建議使用 Chrome 或 Edge 瀏覽器！');
@@ -341,7 +297,6 @@ function setupEventListeners() {
     }
 
     try {
-      // 呼叫瀏覽器原生螢幕擷取選單
       const stream = await navigator.mediaDevices.getDisplayMedia({
         video: { cursor: "always" },
         audio: false
@@ -351,17 +306,14 @@ function setupEventListeners() {
       const imageCapture = new ImageCapture(track);
       const bitmap = await imageCapture.grabFrame();
 
-      // 使用 Canvas 將影格轉換為圖片
       const canvas = document.createElement('canvas');
       canvas.width = bitmap.width;
       canvas.height = bitmap.height;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(bitmap, 0, 0, bitmap.width, bitmap.height);
 
-      // 停止螢幕錄製串流
       track.stop();
 
-      // 將擷取圖片插入 Quill 編輯器
       const base64Url = canvas.toDataURL('image/png');
       const range = quill.getSelection(true) || { index: quill.getLength() };
       quill.insertEmbed(range.index, 'image', base64Url);
@@ -377,6 +329,8 @@ function setupEventListeners() {
       }
     }
   });
+
+  // 🎙️ 語音轉文字
   let recognition = null;
   let isRecording = false;
   if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -416,7 +370,7 @@ function setupEventListeners() {
     });
   }
 
-  // 匯出功能監聽
+  // 匯出按鈕
   elements.exportPdf.addEventListener('click', (e) => {
     e.preventDefault();
     exportToPdf();
@@ -443,7 +397,6 @@ function setupEventListeners() {
   });
 }
 
-// 拖拽圖片處理 (Drag and Drop)
 function setupDragAndDrop() {
   const container = document.querySelector('.main-content');
 
@@ -479,7 +432,6 @@ function setupDragAndDrop() {
   });
 }
 
-// 插入本地圖片至編輯器 (轉為 Base64 URI 以確保全平台相容與可打包至 Word)
 function insertImageFile(file) {
   const reader = new FileReader();
   reader.onload = (e) => {
@@ -492,7 +444,6 @@ function insertImageFile(file) {
   reader.readAsDataURL(file);
 }
 
-// 新增空白筆記
 async function createNewNote() {
   const newNote = {
     id: 'note-' + Date.now(),
@@ -511,27 +462,22 @@ async function createNewNote() {
   elements.titleInput.select();
 }
 
-// 載入特定筆記至編輯器
 async function loadNoteToEditor(id) {
   currentNoteId = id;
   const note = await db.notes.get(id);
   if (!note) return;
 
-  // 設置標題與標籤
   elements.titleInput.value = note.title || '';
   elements.tagsInput.value = note.tags ? note.tags.join(', ') : '';
   
-  // 載入 Quill 內容
   quill.clipboard.dangerouslyPasteHTML(note.content || '<p><br></p>');
 
-  // 更新 UI 狀態
   updatePinButtonUI(note.isPinned);
   elements.updatedTimeText.textContent = formatDate(note.updatedAt);
   updateWordCount();
   highlightActiveNoteInList(id);
 }
 
-// 觸發自動儲存
 function triggerAutoSave() {
   if (!currentNoteId) return;
 
@@ -544,7 +490,6 @@ function triggerAutoSave() {
   }, 800);
 }
 
-// 儲存當前筆記至 IndexedDB
 async function saveCurrentNote() {
   if (!currentNoteId) return;
 
@@ -564,27 +509,22 @@ async function saveCurrentNote() {
   elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 已儲存';
   elements.updatedTimeText.textContent = formatDate(updatedAt);
 
-  // 刷新側邊欄標題/預覽
   await loadNotesList(elements.searchInput.value.trim());
 }
 
-// 載入側邊欄筆記清單
 async function loadNotesList(searchQuery = '') {
   let query = db.notes.orderBy('updatedAt').reverse();
   let notes = await query.toArray();
 
-  // 計算數量
   const totalCount = notes.length;
   const pinnedCount = notes.filter(n => n.isPinned).length;
   elements.countAll.textContent = totalCount;
   elements.countPinned.textContent = pinnedCount;
 
-  // 分頁篩選
   if (currentFilter === 'pinned') {
     notes = notes.filter(n => n.isPinned);
   }
 
-  // 搜尋關鍵字篩選
   if (searchQuery) {
     const q = searchQuery.toLowerCase();
     notes = notes.filter(n => {
@@ -598,10 +538,8 @@ async function loadNotesList(searchQuery = '') {
     });
   }
 
-  // 將釘選筆記排在前列
   notes.sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0));
 
-  // 渲染 DOM
   elements.notesList.innerHTML = '';
   if (notes.length === 0) {
     elements.emptyNotesMsg.classList.remove('hidden');
@@ -612,7 +550,6 @@ async function loadNotesList(searchQuery = '') {
       li.className = `note-item ${note.id === currentNoteId ? 'active' : ''}`;
       li.setAttribute('data-id', note.id);
 
-      // 純文字預覽提取
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = note.content;
       const previewText = tempDiv.textContent || tempDiv.innerText || '無內容...';
@@ -639,14 +576,12 @@ async function loadNotesList(searchQuery = '') {
   }
 }
 
-// 標示當前選擇的筆記
 function highlightActiveNoteInList(id) {
   document.querySelectorAll('.note-item').forEach(item => {
     item.classList.toggle('active', item.getAttribute('data-id') === id);
   });
 }
 
-// 更新釘選按鈕狀態
 function updatePinButtonUI(isPinned) {
   if (isPinned) {
     elements.pinNoteBtn.classList.add('active');
@@ -659,17 +594,12 @@ function updatePinButtonUI(isPinned) {
   }
 }
 
-// 字數統計
 function updateWordCount() {
   const text = quill.getText().trim();
   const count = text.length > 0 ? text.length : 0;
   elements.wordCountText.textContent = count;
 }
 
-// ==========================================================================
-// 📄 匯出模組 (包含 PDF & Word 匯出)
-
-// 匯出為 PDF 文件
 async function exportToPdf() {
   if (!currentNoteId) return;
   const note = await db.notes.get(currentNoteId);
@@ -677,7 +607,6 @@ async function exportToPdf() {
 
   const noteTitle = note.title || '筆記';
   
-  // 建立排版良好的臨時 HTML 元素供 PDF 轉換
   const tempDiv = document.createElement('div');
   tempDiv.style.padding = '20px';
   tempDiv.style.color = '#1e293b';
@@ -710,9 +639,6 @@ async function exportToPdf() {
   }
 }
 
-// 匯出為 Word (.docx)
-
-// 匯出為 Word (.docx)
 async function exportToWord() {
   if (!currentNoteId) return;
   const note = await db.notes.get(currentNoteId);
@@ -747,7 +673,6 @@ async function exportToWord() {
   `;
 
   try {
-    // 使用 html-docx-js 轉碼打包為原生 Word 二進位檔
     const converted = htmlDocx.asBlob(htmlContent);
     saveAs(converted, `${noteTitle}.docx`);
   } catch (err) {
@@ -757,7 +682,6 @@ async function exportToWord() {
   }
 }
 
-// 匯出為 HTML
 async function exportToHtml() {
   const note = await db.notes.get(currentNoteId);
   if (!note) return;
@@ -766,7 +690,6 @@ async function exportToHtml() {
   saveAs(blob, `${note.title || '筆記'}.html`);
 }
 
-// 匯出為 TXT
 async function exportToTxt() {
   const note = await db.notes.get(currentNoteId);
   if (!note) return;
@@ -775,7 +698,6 @@ async function exportToTxt() {
   saveAs(blob, `${note.title || '筆記'}.txt`);
 }
 
-// 備份全數據為 JSON
 async function exportToJson() {
   const allNotes = await db.notes.toArray();
   const jsonStr = JSON.stringify(allNotes, null, 2);
@@ -783,7 +705,6 @@ async function exportToJson() {
   saveAs(blob, `AuraNote_Backup_${new Date().toISOString().slice(0, 10)}.json`);
 }
 
-// 動態生成 Chart.js 圖表並轉換為圖片插入 Quill 編輯器
 function generateChartAndInsert() {
   const title = document.getElementById('chart-title-input').value.trim() || '統計圖表';
   const type = document.getElementById('chart-type-select').value;
@@ -798,7 +719,6 @@ function generateChartAndInsert() {
     return;
   }
 
-  // 隱藏的 Canvas 用於渲染圖表
   const tempCanvas = document.createElement('canvas');
   tempCanvas.width = 600;
   tempCanvas.height = 350;
@@ -835,7 +755,6 @@ function generateChartAndInsert() {
     }
   });
 
-  // 等待圖表繪製完成轉成 Image Base64
   setTimeout(() => {
     const chartBase64 = tempCanvas.toDataURL('image/png');
     document.body.removeChild(tempCanvas);
@@ -847,7 +766,6 @@ function generateChartAndInsert() {
   }, 300);
 }
 
-// 輔助函式: 時間格式化
 function formatDate(isoString) {
   if (!isoString) return '';
   const date = new Date(isoString);
@@ -859,7 +777,6 @@ function formatDate(isoString) {
   return `${year}/${month}/${day} ${hours}:${minutes}`;
 }
 
-// 輔助函式: HTML 轉義
 function escapeHtml(str) {
   if (!str) return '';
   return str.replace(/&/g, "&amp;")
