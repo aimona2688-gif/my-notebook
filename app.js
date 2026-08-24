@@ -51,11 +51,13 @@ const elements = {
   exportTxt: document.getElementById('export-txt'),
   exportJson: document.getElementById('export-json'),
 
-  // 圖表、截圖、螢幕擷取與語音
+  // 圖表、截圖、螢幕擷取、復原與語音
   insertChartBtn: document.getElementById('insert-chart-btn'),
   screenshotBtn: document.getElementById('screenshot-btn'),
   screenCaptureBtn: document.getElementById('screen-capture-btn'),
   voiceInputBtn: document.getElementById('voice-input-btn'),
+  customUndoBtn: document.getElementById('custom-undo-btn'),
+  customRedoBtn: document.getElementById('custom-redo-btn'),
   chartModal: document.getElementById('chart-modal'),
   closeChartModal: document.getElementById('close-chart-modal'),
   cancelChartBtn: document.getElementById('cancel-chart-btn'),
@@ -216,6 +218,15 @@ function setupEventListeners() {
       insertImageFile(file);
       elements.imageFileInput.value = '';
     }
+  });
+
+  // 🔄 復原 (Undo) 與 重做 (Redo) 歷史紀錄功能
+  elements.customUndoBtn.addEventListener('click', () => {
+    quill.history.undo();
+  });
+
+  elements.customRedoBtn.addEventListener('click', () => {
+    quill.history.redo();
   });
 
   // 插入分隔線
