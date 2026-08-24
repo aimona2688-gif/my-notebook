@@ -51,8 +51,10 @@ const elements = {
   exportTxt: document.getElementById('export-txt'),
   exportJson: document.getElementById('export-json'),
 
-  // 圖表與語音
+  // 圖表、截圖、螢幕擷取與語音
   insertChartBtn: document.getElementById('insert-chart-btn'),
+  screenshotBtn: document.getElementById('screenshot-btn'),
+  screenCaptureBtn: document.getElementById('screen-capture-btn'),
   voiceInputBtn: document.getElementById('voice-input-btn'),
   chartModal: document.getElementById('chart-modal'),
   closeChartModal: document.getElementById('close-chart-modal'),
@@ -236,7 +238,78 @@ function setupEventListeners() {
     hideChartModal();
   });
 
-  // 🎙️ 語音轉文字輸入 (Web Speech API)
+  // 📸 一鍵筆記截圖產出長圖功能 (Screenshot)
+  elements.screenshotBtn.addEventListener('click', async () => {
+    if (!currentNoteId) return;
+    const note = await db.notes.get(currentNoteId);
+    const title = note ? (note.title || '筆記') : '筆記';
+
+    try {
+      elements.saveStatus.className = 'saving';
+      elements.saveStatus.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 畫面截圖中...';
+
+      const editorEl = document.querySelector('.editor-wrapper');
+      const canvas = await html2canvas(editorEl, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: document.body.classList.contains('light-theme') ? '#ffffff' : '#0f172a'
+      });
+
+      canvas.toBlob((blob) => {
+        saveAs(blob, `${title}_截圖.png`);
+        elements.saveStatus.className = 'saved';
+        elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 已截圖保存！';
+      });
+    } catch (err) {
+      console.error('截圖失敗:', err);
+      alert('截圖時發生錯誤，請重試！');
+    }
+  });
+
+  // 🖥️ 擷取電腦螢幕/視窗畫面並直接插入筆記 (Screen Capture API)
+  elements.screenCaptureBtn.addEventListener('click', async () => {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+      alert('您的瀏覽器不支援直接螢幕擷取功能，建議使用 Chrome 或 Edge 瀏覽器！');
+      return;
+    }
+
+    try {
+      // 呼叫瀏覽器原生螢幕擷取選單
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        video: { cursor: "always" },
+        audio: false
+      });
+
+      const track = stream.getVideoTracks()[0];
+      const imageCapture = new ImageCapture(track);
+      const bitmap = await imageCapture.grabFrame();
+
+      // 使用 Canvas 將影格轉換為圖片
+      const canvas = document.createElement('canvas');
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(bitmap, 0, 0, bitmap.width, bitmap.height);
+
+      // 停止螢幕錄製串流
+      track.stop();
+
+      // 將擷取圖片插入 Quill 編輯器
+      const base64Url = canvas.toDataURL('image/png');
+      const range = quill.getSelection(true) || { index: quill.getLength() };
+      quill.insertEmbed(range.index, 'image', base64Url);
+      quill.setSelection(range.index + 1);
+      triggerAutoSave();
+
+      elements.saveStatus.className = 'saved';
+      elements.saveStatus.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 已成功插入螢幕截圖！';
+    } catch (err) {
+      if (err.name !== 'NotAllowedError') {
+        console.error('螢幕擷取失敗:', err);
+        alert('擷取螢幕失敗或取消擷取。');
+      }
+    }
+  });
   let recognition = null;
   let isRecording = false;
   if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
