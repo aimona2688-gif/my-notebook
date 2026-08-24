@@ -1,8 +1,9 @@
 /* ==========================================================================
-   Aura Note - Modern High-End UI Stylesheet (Stable Rock-Solid Version)
+   Aura Note - Modern High-End UI Stylesheet
    ========================================================================== */
 
 :root {
+  /* 顏色變數 - 深色模式預設 */
   --bg-primary: #0f172a;
   --bg-secondary: #1e293b;
   --bg-tertiary: #334155;
@@ -25,6 +26,7 @@
 
   --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
   --glass-bg: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
 
   --font-family: 'Noto Sans TC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --radius-sm: 6px;
@@ -40,14 +42,16 @@ body.light-theme {
   --bg-secondary: #ffffff;
   --bg-tertiary: #f1f5f9;
   --bg-sidebar: #f1f5f9;
-  --border-color: #cbd5e1;
+  --border-color: #e2e8f0;
   --border-focus: #4f46e5;
 
   --text-primary: #0f172a;
-  --text-secondary: #334155;
-  --text-muted: #64748b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
 
   --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.06);
 }
 
 /* Reset & 全局樣式 */
@@ -65,6 +69,7 @@ body, html {
   overflow: hidden;
 }
 
+/* 主容器排版 */
 .app-container {
   display: flex;
   width: 100vw;
@@ -72,7 +77,9 @@ body, html {
   overflow: hidden;
 }
 
-/* 側邊欄 (Sidebar) 樣式 */
+/* ==========================================================================
+   側邊欄 (Sidebar) 樣式
+   ========================================================================== */
 .sidebar {
   width: 320px;
   min-width: 320px;
@@ -92,7 +99,14 @@ body, html {
   display: none;
 }
 
+/* 📱 手機端極致自適應響應式優化 (Responsive Mobile Layout) */
 @media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+    height: 100vh;
+    height: -webkit-fill-available;
+  }
+
   .sidebar {
     position: fixed;
     height: 100%;
@@ -143,6 +157,11 @@ body, html {
     display: inline-flex !important;
   }
 
+  /* 工具列選單手機版自適應縮小 */
+  .ql-snow .ql-picker.ql-header, .ql-snow .ql-picker.ql-size {
+    width: 75px !important;
+  }
+
   #editor-container {
     min-height: 250px;
   }
@@ -169,6 +188,7 @@ body, html {
 .brand-icon {
   font-size: 1.5rem;
   color: var(--accent-color);
+  filter: drop-shadow(0 0 8px var(--accent-glow));
 }
 
 .brand h2 {
@@ -204,8 +224,10 @@ body, html {
 
 .primary-btn:hover {
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--accent-glow);
 }
 
+/* 搜尋框 */
 .search-box {
   margin: 0 20px 15px 20px;
   position: relative;
@@ -228,6 +250,12 @@ body, html {
   color: var(--text-primary);
   font-size: 0.9rem;
   outline: none;
+  transition: var(--transition-fast);
+}
+
+.search-box input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 .clear-btn {
@@ -242,6 +270,11 @@ body, html {
   padding: 4px;
 }
 
+.clear-btn:hover {
+  color: var(--text-primary);
+}
+
+/* 分類分頁 Tab */
 .category-tabs {
   display: flex;
   gap: 8px;
@@ -259,10 +292,16 @@ body, html {
   font-weight: 500;
   border-radius: var(--radius-sm);
   cursor: pointer;
+  transition: var(--transition-fast);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
+}
+
+.tab-btn:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 .tab-btn.active {
@@ -271,6 +310,7 @@ body, html {
   font-weight: 600;
 }
 
+/* 筆記清單列表 */
 .notes-list-container {
   flex: 1;
   overflow-y: auto;
@@ -291,11 +331,18 @@ body, html {
   border: 1px solid transparent;
   cursor: pointer;
   transition: var(--transition-fast);
+  position: relative;
 }
 
-.note-item:hover, .note-item.active {
+.note-item:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--glass-border);
+}
+
+.note-item.active {
   background-color: var(--bg-secondary);
   border-color: var(--accent-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .note-item-header {
@@ -337,6 +384,11 @@ body, html {
   color: var(--text-muted);
 }
 
+.note-tags-badge {
+  display: inline-flex;
+  gap: 4px;
+}
+
 .tag-chip {
   background-color: var(--bg-tertiary);
   color: var(--text-secondary);
@@ -355,6 +407,11 @@ body, html {
   gap: 12px;
 }
 
+.empty-state i {
+  font-size: 2.5rem;
+}
+
+/* 側邊欄底部 */
 .sidebar-footer {
   padding: 15px 20px;
   border-top: 1px solid var(--border-color);
@@ -375,6 +432,11 @@ body, html {
   justify-content: center;
   gap: 8px;
   font-size: 0.85rem;
+  transition: var(--transition-fast);
+}
+
+.theme-btn:hover {
+  background-color: var(--bg-tertiary);
 }
 
 .storage-info {
@@ -387,7 +449,9 @@ body, html {
   gap: 6px;
 }
 
-/* 主內容區域 (Main Editor Area) */
+/* ==========================================================================
+   主內容區域 (Main Editor Area)
+   ========================================================================== */
 .main-content {
   flex: 1;
   display: flex;
@@ -426,10 +490,17 @@ body, html {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.icon-btn:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--text-muted);
 }
 
 .icon-btn.danger:hover {
   background: var(--danger-color);
+  border-color: var(--danger-color);
   color: white;
 }
 
@@ -468,7 +539,7 @@ body, html {
   box-shadow: var(--card-shadow);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  z-index: 99999;
+  z-index: 9999;
   overflow: hidden;
 }
 
@@ -480,6 +551,7 @@ body, html {
   align-items: center;
   gap: 10px;
   font-size: 0.9rem;
+  transition: var(--transition-fast);
 }
 
 .dropdown-content a:hover {
@@ -502,7 +574,6 @@ body, html {
   padding: 24px 40px;
   overflow-y: auto;
   position: relative;
-  z-index: 1;
 }
 
 .note-header-inputs {
@@ -519,7 +590,6 @@ body, html {
   color: var(--text-primary);
   font-family: var(--font-family);
   margin-bottom: 8px;
-  caret-color: var(--text-primary);
 }
 
 .title-input::placeholder {
@@ -550,7 +620,20 @@ body, html {
   width: 200px;
 }
 
-/* 工具列與下拉選單極致穩定高對比樣式 */
+/* Customizing Quill Toolbar & Container */
+/* 字級大小與字型變化設定 */
+.ql-editor .ql-size-small { font-size: 0.75rem !important; }
+.ql-editor .ql-size-large { font-size: 1.3rem !important; }
+.ql-editor .ql-size-huge { font-size: 1.85rem !important; }
+
+.ql-editor .ql-font-system { font-family: system-ui, sans-serif !important; }
+.ql-editor .ql-font-microsoft-jhenghei { font-family: 'Microsoft JhengHei', '微軟正黑體', sans-serif !important; }
+.ql-editor .ql-font-noto-sans-tc { font-family: 'Noto Sans TC', sans-serif !important; }
+.ql-editor .ql-font-serif { font-family: 'Noto Serif TC', Georgia, serif !important; }
+.ql-editor .ql-font-noto-serif-tc { font-family: 'Noto Serif TC', Georgia, serif !important; }
+.ql-editor .ql-font-kai { font-family: '標楷體', 'DFKai-SB', KaiTi, serif !important; }
+.ql-editor .ql-font-monospace { font-family: 'Fira Code', 'Courier New', monospace !important; }
+
 #toolbar-container {
   border: 1px solid var(--border-color) !important;
   border-radius: var(--radius-md) var(--radius-md) 0 0;
@@ -571,14 +654,28 @@ body, html {
   fill: var(--text-primary) !important;
 }
 
-.ql-snow .ql-picker {
-  color: var(--text-primary) !important;
+/* 修正下拉選單 (字型、標題、字級) 寬度與溢出對齊 */
+.ql-snow .ql-picker.ql-font {
+  width: 125px !important;
+}
+
+.ql-snow .ql-picker.ql-header {
+  width: 110px !important;
+}
+
+.ql-snow .ql-picker.ql-size {
+  width: 100px !important;
+}
+
+.ql-snow .ql-picker-label {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .ql-snow .ql-picker-label {
   color: var(--text-primary) !important;
   border-color: var(--border-color) !important;
-  white-space: nowrap !important;
 }
 
 .ql-snow .ql-picker-label::before {
@@ -598,6 +695,7 @@ body, html {
   color: #f8fafc !important;
   padding: 8px 12px !important;
   font-size: 0.9rem !important;
+  border-radius: 4px !important;
 }
 
 .ql-snow .ql-picker-options .ql-picker-item::before {
@@ -607,6 +705,11 @@ body, html {
 .ql-snow .ql-picker-options .ql-picker-item:hover,
 .ql-snow .ql-picker-options .ql-picker-item.ql-selected {
   background-color: #334155 !important;
+  color: #818cf8 !important;
+}
+
+.ql-snow .ql-picker-options .ql-picker-item:hover::before,
+.ql-snow .ql-picker-options .ql-picker-item.ql-selected::before {
   color: #818cf8 !important;
 }
 
@@ -625,42 +728,102 @@ body, html {
   color: var(--accent-color);
 }
 
-#editor-container {
-  flex: 1;
-  min-height: 450px;
-  border: 1px solid var(--border-color) !important;
-  border-top: none !important;
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
-  background-color: var(--bg-secondary);
-  font-size: 1.05rem;
-  line-height: 1.7;
-}
-
-/* 編輯器內部動態黑白文字與黑白游標（解決淺色模式看不見問題） */
+/* 編輯器內部元素樣式 (引用區塊、程式碼區塊、連結) */
 .ql-editor {
-  padding: 24px !important;
-  min-height: 400px;
+  color: var(--text-primary) !important;
 }
 
-body.dark-theme #editor-container, 
-body.dark-theme .ql-editor {
-  color: #f8fafc !important;
-  caret-color: #f8fafc !important;
+.ql-editor blockquote {
+  border-left: 4px solid var(--accent-color) !important;
+  padding-left: 16px !important;
+  margin: 12px 0 !important;
+  color: var(--text-secondary) !important;
+  background-color: rgba(99, 102, 241, 0.08) !important;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-style: italic;
 }
 
-body.light-theme #editor-container, 
-body.light-theme .ql-editor {
-  color: #0f172a !important;
-  caret-color: #0f172a !important;
+.ql-editor pre.ql-syntax, .ql-editor .ql-code-block-container {
+  background-color: #090d16 !important;
+  color: #38bdf8 !important;
+  padding: 14px 18px !important;
+  border-radius: var(--radius-md) !important;
+  font-family: 'Fira Code', monospace !important;
+  font-size: 0.9rem !important;
+  margin: 12px 0 !important;
+  border: 1px solid var(--border-color);
 }
 
-/* 超連結標籤 (明顯藍色與底線) */
-.ql-editor a, .ql-editor a[href] {
+.ql-editor,
+.ql-editor p,
+.ql-editor span,
+.ql-editor li,
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3 {
+  color: var(--text-primary);
+}
+
+/* 只有帶有 href 屬性的超連結才顯示為藍色+底線 */
+.ql-editor a[href] {
   color: #38bdf8 !important;
   text-decoration: underline !important;
   text-underline-offset: 3px;
   font-weight: 600;
   cursor: pointer !important;
+}
+
+.ql-editor a:hover {
+  color: #818cf8 !important;
+  text-decoration: underline !important;
+}
+
+.ql-editor {
+  padding: 24px !important;
+  min-height: 400px;
+}
+
+.ql-editor.ql-blank::before {
+  color: var(--text-muted) !important;
+  font-style: normal !important;
+}
+
+/* 圖片拖拽 Overlay */
+.drag-drop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(99, 102, 241, 0.85);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: 3px dashed white;
+  margin: 20px;
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+}
+
+.overlay-content {
+  text-align: center;
+}
+
+.overlay-content i {
+  font-size: 4rem;
+  margin-bottom: 12px;
+}
+
+.overlay-content p {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.hidden {
+  display: none !important;
 }
 
 /* Modal 彈出視窗樣式 */
@@ -672,7 +835,7 @@ body.light-theme .ql-editor {
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(5px);
-  z-index: 10000;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -711,6 +874,8 @@ body.light-theme .ql-editor {
   font-size: 1.1rem;
   cursor: pointer;
 }
+
+.close-btn:hover { color: var(--text-primary); }
 
 .modal-body {
   padding: 20px;
@@ -757,31 +922,4 @@ body.light-theme .ql-editor {
   0% { transform: scale(1); }
   50% { transform: scale(1.15); }
   100% { transform: scale(1); }
-}
-
-.drag-drop-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(99, 102, 241, 0.85);
-  backdrop-filter: blur(4px);
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  border: 3px dashed white;
-  margin: 20px;
-  border-radius: var(--radius-lg);
-  pointer-events: none;
-}
-
-.overlay-content {
-  text-align: center;
-}
-
-.hidden {
-  display: none !important;
 }
