@@ -70,12 +70,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupEventListeners();
   setupDragAndDrop();
 
-  // 若資料庫為空，建立預設示範筆記
+  // 若資料庫沒有筆記，自動建立美麗原版歡迎筆記
   const count = await db.notes.count();
   if (count === 0) {
     await createDemoNote();
   } else {
-    // 載入最新筆記
     const firstNote = await db.notes.orderBy('updatedAt').reverse().first();
     if (firstNote) {
       await loadNoteToEditor(firstNote.id);
