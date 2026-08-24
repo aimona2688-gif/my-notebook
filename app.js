@@ -169,16 +169,42 @@ async function createDemoNote() {
 
 // 監聽事件註冊
 function setupEventListeners() {
-  // 側邊欄開關
-  elements.toggleSidebarBtn.addEventListener('click', () => {
-    elements.sidebar.classList.toggle('collapsed');
-    try { localStorage.setItem('sidebarCollapsed', elements.sidebar.classList.contains('collapsed')); } catch(e) {}
-  });
+  // 側邊欄開關 (同步更新按鈕 UI 與 localStorage)
+  const updateSidebarToggleUI = (collapsed) => {
+    if (!elements.toggleSidebarBtn) return;
+    const icon = elements.toggleSidebarBtn.querySelector('i');
+    if (collapsed) {
+      elements.toggleSidebarBtn.title = '展開側邊欄';
+      if (icon) icon.className = 'fa-solid fa-chevron-right';
+    } else {
+      elements.toggleSidebarBtn.title = '收合側邊欄';
+      if (icon) icon.className = 'fa-solid fa-bars-staggered';
+    }
+  };
 
-  elements.mobileMenuBtn.addEventListener('click', () => {
-    elements.sidebar.classList.toggle('collapsed');
-    try { localStorage.setItem('sidebarCollapsed', elements.sidebar.classList.contains('collapsed')); } catch(e) {}
-  });
+  const setSidebarCollapsed = (collapsed) => {
+    if (!elements.sidebar) return;
+    elements.sidebar.classList.toggle('collapsed', collapsed);
+    try { localStorage.setItem('sidebarCollapsed', collapsed); } catch(e) {}
+    updateSidebarToggleUI(collapsed);
+  };
+
+  // initial UI sync
+  try { updateSidebarToggleUI(elements.sidebar && elements.sidebar.classList.contains('collapsed')); } catch(e) {}
+
+  if (elements.toggleSidebarBtn) {
+    elements.toggleSidebarBtn.addEventListener('click', () => {
+      const collapsed = !(elements.sidebar && elements.sidebar.classList.contains('collapsed'));
+      setSidebarCollapsed(collapsed);
+    });
+  }
+
+  if (elements.mobileMenuBtn) {
+    elements.mobileMenuBtn.addEventListener('click', () => {
+      const collapsed = !(elements.sidebar && elements.sidebar.classList.contains('collapsed'));
+      setSidebarCollapsed(collapsed);
+    });
+  }
 
   // 新建筆記
   elements.newNoteBtn.addEventListener('click', () => createNewNote());
@@ -284,10 +310,7 @@ function setupEventListeners() {
   elements.openSidebarBtn = document.getElementById('open-sidebar-btn');
   if (elements.openSidebarBtn) {
     elements.openSidebarBtn.addEventListener('click', () => {
-      if (elements.sidebar) {
-        elements.sidebar.classList.remove('collapsed');
-        try { localStorage.setItem('sidebarCollapsed', 'false'); } catch(e) {}
-      }
+      setSidebarCollapsed(false);
     });
   }
 
