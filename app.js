@@ -81,6 +81,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   initQuillEditor();
   setupEventListeners();
   setupDragAndDrop();
+
+  // 回復側邊欄收合狀態（若使用者先前在手機上收合過）
+  try {
+    const savedCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    if (savedCollapsed && elements.sidebar) {
+      elements.sidebar.classList.add('collapsed');
+    }
+  } catch (e) {
+    // ignore storage errors
+  }
   
   // 自動清理之前不小心加上黑底/全藍的舊歡迎筆記
   const allNotes = await db.notes.toArray();
@@ -162,10 +172,12 @@ function setupEventListeners() {
   // 側邊欄開關
   elements.toggleSidebarBtn.addEventListener('click', () => {
     elements.sidebar.classList.toggle('collapsed');
+    try { localStorage.setItem('sidebarCollapsed', elements.sidebar.classList.contains('collapsed')); } catch(e) {}
   });
 
   elements.mobileMenuBtn.addEventListener('click', () => {
     elements.sidebar.classList.toggle('collapsed');
+    try { localStorage.setItem('sidebarCollapsed', elements.sidebar.classList.contains('collapsed')); } catch(e) {}
   });
 
   // 新建筆記
@@ -267,6 +279,17 @@ function setupEventListeners() {
   elements.insertChartBtn.addEventListener('click', () => {
     elements.chartModal.classList.remove('hidden');
   });
+
+  // 手機端浮動按鈕——在側邊欄收合時顯示，點擊可開啟側邊欄
+  elements.openSidebarBtn = document.getElementById('open-sidebar-btn');
+  if (elements.openSidebarBtn) {
+    elements.openSidebarBtn.addEventListener('click', () => {
+      if (elements.sidebar) {
+        elements.sidebar.classList.remove('collapsed');
+        try { localStorage.setItem('sidebarCollapsed', 'false'); } catch(e) {}
+      }
+    });
+  }
 
   const hideChartModal = () => elements.chartModal.classList.add('hidden');
   elements.closeChartModal.addEventListener('click', hideChartModal);
