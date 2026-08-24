@@ -749,7 +749,7 @@ body, html {
   border: 1px solid var(--border-color);
 }
 
-/* 編輯器內部元素樣式 (強制預設為極致質感純白色文字 #f8fafc) */
+/* 編輯器內部元素樣式 (動態適應深色/淺色主題) */
 .ql-editor, 
 .ql-editor p, 
 .ql-editor span, 
@@ -757,6 +757,28 @@ body, html {
 .ql-editor h1, 
 .ql-editor h2, 
 .ql-editor h3 {
+  color: var(--text-primary) !important;
+}
+
+/* 淺色模式下強制預設文字為深黑色 #0f172a */
+body.light-theme .ql-editor, 
+body.light-theme .ql-editor p, 
+body.light-theme .ql-editor span, 
+body.light-theme .ql-editor li, 
+body.light-theme .ql-editor h1, 
+body.light-theme .ql-editor h2, 
+body.light-theme .ql-editor h3 {
+  color: #0f172a !important;
+}
+
+/* 深色模式下強制預設文字為極致白 #f8fafc */
+body.dark-theme .ql-editor, 
+body.dark-theme .ql-editor p, 
+body.dark-theme .ql-editor span, 
+body.dark-theme .ql-editor li, 
+body.dark-theme .ql-editor h1, 
+body.dark-theme .ql-editor h2, 
+body.dark-theme .ql-editor h3 {
   color: #f8fafc !important;
 }
 
