@@ -87,19 +87,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // 初始化 Quill 編輯器
 function initQuillEditor() {
-  // 使用 StyleAttributor 允許使用者自訂與切換任何字體
-  const FontStyle = Quill.import('attributors/style/font');
+  // 使用 Quill 內建原版 StyleAttributor (確保 HTML style="color: ..." 100% 寫入與套用)
   const ColorStyle = Quill.import('attributors/style/color');
-  const SizeStyle = Quill.import('attributors/style/size');
-
-  FontStyle.whitelist = [
-    'sans-serif', 'serif', 'kai', 'monospace', 'cursive', 
-    'arial', 'times', 'georgia', 'courier', 'impact', 'trebuchet', 'verdana'
-  ];
+  const BackgroundStyle = Quill.import('attributors/style/background');
   
-  Quill.register(FontStyle, true);
   Quill.register(ColorStyle, true);
-  Quill.register(SizeStyle, true);
+  Quill.register(BackgroundStyle, true);
 
   quill = new Quill('#editor-container', {
     modules: {
