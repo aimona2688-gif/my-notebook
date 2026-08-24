@@ -94,6 +94,23 @@ function initQuillEditor() {
     theme: 'snow'
   });
 
+  // 自訂超連結點擊行為 Prompt
+  const toolbar = quill.getModule('toolbar');
+  toolbar.addHandler('link', function(value) {
+    if (value) {
+      const href = prompt('請輸入超連結網址 (例如: https://www.google.com):');
+      if (href) {
+        let url = href.trim();
+        if (!/^https?:\/\//i.test(url)) {
+          url = 'https://' + url;
+        }
+        quill.format('link', url);
+      }
+    } else {
+      quill.format('link', false);
+    }
+  });
+
   // 監聽內容變動 -> 自動觸發儲存與計算字數
   quill.on('text-change', () => {
     updateWordCount();
