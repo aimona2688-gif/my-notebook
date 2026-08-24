@@ -76,10 +76,318 @@
       </div>
     </aside>
 
-    <!-- 手機端側邊欄開啟按鈕（在側邊欄收合時顯示） -->
-    <button id="open-sidebar-btn" class="mobile-open-btn icon-btn" aria-label="開啟側邊欄" title="開啟側邊欄">
-      <i class="fa-solid fa-bars"></i>
-    </button>
+    <!-- 主編輯區域 Main Content Area -->
+    <main class="main-content">
+      <header class="top-bar">
+        <div class="bar-left">
+          <button id="mobile-menu-btn" class="icon-btn mobile-only">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="note-status-indicator">
+            <span id="save-status" class="saved"><i class="fa-solid fa-cloud-arrow-up"></i> 已儲存</span>
+          </div>
+        </div>
+
+        <div class="bar-right">
+          <button id="pin-note-btn" class="icon-btn" title="釘選這篇筆記">
+            <i class="fa-regular fa-thumbtack"></i>
+          </button>
+          <div class="dropdown">
+            <button id="export-btn" class="primary-btn export-btn">
+              <i class="fa-solid fa-file-export"></i> 匯出檔案 <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="dropdown-content">
+              <a href="#" id="export-pdf"><i class="fa-solid fa-file-pdf text-pdf"></i> 匯出為 PDF 文件</a>
+              <a href="#" id="export-word"><i class="fa-solid fa-file-word text-word"></i> 匯出為 Word (.docx)</a>
+              <a href="#" id="export-html"><i class="fa-solid fa-code text-html"></i> 匯出為 HTML 網頁</a>
+              <a href="#" id="export-txt"><i class="fa-solid fa-file-lines"></i> 匯出為 純文字 (.txt)</a>
+              <a href="#" id="export-json"><i class="fa-solid fa-file-code"></i> 備份 JSON 數據</a>
+            </div>
+          </div>
+          <button id="delete-note-btn" class="icon-btn danger" title="刪除筆記">
+            <i class="fa-regular fa-trash-can"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- 編輯區包含區域 -->
+      <div class="editor-wrapper">
+        <div class="note-header-inputs">
+          <input type="text" id="note-title-input" class="title-input" placeholder="輸入筆記標題..." autocomplete="off">
+          <div class="note-meta-bar">
+            <span class="meta-item"><i class="fa-regular fa-clock"></i> 最後更新: <span id="note-updated-time">-</span></span>
+            <span class="meta-item"><i class="fa-solid fa-font"></i> 字數: <span id="word-count">0</span></span>
+            <div class="tags-wrapper">
+              <i class="fa-solid fa-tag"></i>
+              <input type="text" id="note-tags-input" placeholder="新增標籤 (以逗號分隔)">
+            </div>
+          </div>
+        </div>
+
+        <!-- 自訂進階工具列與 Quill Editor 結合 -->
+        <div id="toolbar-container">
+          <!-- 字體字型與字級大小選擇 -->
+          <span class="ql-formats">
+            <select class="ql-font" title="選擇字型">
+              <option value="system" selected>系統無襯線</option>
+              <option value="microsoft-jhenghei">微軟正黑體</option>
+              <option value="noto-sans-tc">Noto Sans TC</option>
+              <option value="serif">明體 / 襯線體</option>
+              <option value="noto-serif-tc">Noto Serif TC</option>
+              <option value="kai">標楷體</option>
+              <option value="monospace">等寬程式體</option>
+            </select>
+
+          <!-- 復原與重做 (Undo / Redo) -->
+          <span class="ql-formats">
+            <button id="custom-undo-btn" class="custom-tb-btn" title="復原 / 上一步 (Ctrl+Z)">
+              <i class="fa-solid fa-rotate-left"></i>
+            </button>
+            <button id="custom-redo-btn" class="custom-tb-btn" title="重做 / 下一步 (Ctrl+Y)">
+              <i class="fa-solid fa-rotate-right"></i>
+            </button>
+          </span>
+
+          <!-- 基本文字格式 -->
+          <span class="ql-formats">
+            <button class="ql-bold" title="粗體 (Ctrl+B)"></button>
+            <button class="ql-italic" title="斜體 (Ctrl+I)"></button>
+            <button class="ql-underline" title="底線 (Ctrl+U)"></button>
+            <button class="ql-strike" title="刪除線"></button>
+          </span>
+
+          <!-- 顏色與畫線 -->
+          <span class="ql-formats">
+            <select class="ql-color" title="文字顏色">
+              <option selected></option>
+              <option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option>
+              <option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option>
+              <option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option>
+              <option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option>
+              <option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option>
+              <option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option>
+              <option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option>
+              <option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option>
+              <option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option>
+              <option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option>
+              <option value="#666600"></option><option value="#003700"></option><option value="#002966"></option>
+              <option value="#3d1466"></option>
+            </select>
+            <select class="ql-background" title="文字背景螢光筆">
+              <option selected></option>
+              <option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option>
+              <option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option>
+              <option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option>
+              <option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option>
+              <option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option>
+              <option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option>
+              <option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option>
+              <option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option>
+              <option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option>
+              <option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option>
+              <option value="#666600"></option><option value="#003700"></option><option value="#002966"></option>
+              <option value="#3d1466"></option>
+            </select>
+          </span>
+
+          <!-- 清單與對齊 -->
+          <span class="ql-formats">
+            <button class="ql-list" value="ordered" title="編號列表"></button>
+            <button class="ql-list" value="bullet" title="項目符號"></button>
+            <button class="ql-list" value="check" title="待辦清單"></button>
+            <select class="ql-align" title="對齊方式"></select>
+          </span>
+
+          <!-- 區塊與連結 -->
+          <span class="ql-formats">
+            <button class="ql-blockquote" title="引用區塊"></button>
+            <button class="ql-code-block" title="程式碼區塊"></button>
+            <button class="ql-link" title="插入超連結"></button>
+          </span>
+
+          <!-- 圖片與進階工具 -->
+          <span class="ql-formats">
+            <button id="custom-image-btn" class="custom-tb-btn" title="插入本地圖片/照片">
+              <i class="fa-solid fa-image"></i>
+            </button>
+            <button id="insert-chart-btn" class="custom-tb-btn" title="插入動態統計圖表">
+              <i class="fa-solid fa-chart-pie"></i>
+            </button>
+            <button id="screenshot-btn" class="custom-tb-btn" title="📸 產出筆記長圖/截圖下載">
+              <i class="fa-solid fa-camera"></i>
+            </button>
+            <button id="screen-capture-btn" class="custom-tb-btn" title="🖥️ 擷取電腦螢幕/視窗畫面並插入筆記">
+              <i class="fa-solid fa-desktop"></i>
+            </button>
+            <button id="voice-input-btn" class="custom-tb-btn" title="🎙️ 語音轉文字輸入">
+              <i class="fa-solid fa-microphone"></i>
+            </button>
+            <button id="insert-hr-btn" class="custom-tb-btn" title="插入分隔線">
+              <i class="fa-solid fa-minus"></i>
+            </button>
+          </span>
+
+          <!-- 清除格式 -->
+          <span class="ql-formats">
+            <button class="ql-clean" title="清除格式"></button>
+          </span>
+        </div>
+
+        <!-- 隱藏的檔案選擇器用於圖片 -->
+        <input type="file" id="image-file-input" accept="image/*" style="display: none;">
+
+        <!-- 拖拽圖片提示 Overlay -->
+        <div id="drag-drop-overlay" class="drag-drop-overlay hidden">
+          <div class="overlay-content">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <p>釋放滑鼠以插入圖片至筆記</p>
+          </div>
+        </div>
+
+        <!-- Quill 編輯區域 -->
+        <div id="editor-container"></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 圖表產生器彈出視窗 Modal -->
+  <div id="chart-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-chart-pie"></i> 建立統計圖表</h3>
+        <button id="close-chart-modal" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>圖表標題：</label>
+          <input type="text" id="chart-title-input" value="月度支出統計" placeholder="輸入圖表標題">
+        </div>
+        <div class="form-group">
+          <label>圖表類型：</label>
+          <select id="chart-type-select">
+            <option value="bar">長條圖 (Bar Chart)</option>
+            <option value="pie" selected>圓餅圖 (Pie Chart)</option>
+            <option value="line">折線圖 (Line Chart)</option>
+            <option value="doughnut">環狀圖 (Doughnut)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>資料項目 (以逗號分隔)：</label>
+          <input type="text" id="chart-labels-input" value="飲食, 交通, 娛樂, 購物" placeholder="例: 項目A, 項目B, 項目C">
+        </div>
+        <div class="form-group">
+          <label>數值數據 (以逗號分隔)：</label>
+          <input type="text" id="chart-data-input" value="12000, 3500, 5000, 8000" placeholder="例: 100, 200, 300">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancel-chart-btn" class="theme-btn">取消</button>
+        <button id="generate-chart-btn" class="primary-btn"><i class="fa-solid fa-check"></i> 生成並插入圖表</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引用程式庫 -->
+  <!-- Dexie.js (IndexedDB 數據庫封裝) -->
+  <script src="https://cdn.jsdelivr.net/npm/dexie@3.2.4/dist/dexie.min.js"></script>
+  <!-- Quill Editor JS -->
+  <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+  <!-- html-docx-js (前端 HTML 轉 Word .docx 打包庫) -->
+  <script src="https://cdn.jsdelivr.net/npm/html-docx-js@0.3.1/dist/html-docx.min.js"></script>
+  <!-- FileSaver.js (檔案下載輔助) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <!-- 主應用程式 JS -->
+  <script src="app.js"></script>
+  <!-- PWA Service Worker 註冊 -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('PWA Service Worker 註冊成功'))
+          .catch(err => console.log('PWA Service Worker 註冊失敗', err));
+      });
+    }
+  </script>
+</body>
+</html>
+=======
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Aura Note - 尊榮個人筆記本</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Quill Editor CSS -->
+  <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+  <!-- Chart.js 圖表庫 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- html2pdf.js (PDF 匯出庫) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <!-- html2canvas (畫面截圖庫) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- PWA Manifest & Theme Color -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6366f1">
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3209/3209265.png">
+</head>
+<body class="dark-theme">
+  <div class="app-container">
+    <!-- 側邊欄 Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <i class="fa-solid fa-book-bookmark brand-icon"></i>
+          <h2>Aura Note</h2>
+        </div>
+        <button id="toggle-sidebar" class="icon-btn" title="收合側邊欄">
+          <i class="fa-solid fa-bars-staggered"></i>
+        </button>
+      </div>
+
+      <div class="sidebar-actions">
+        <button id="new-note-btn" class="primary-btn">
+          <i class="fa-solid fa-plus"></i> 新增筆記
+        </button>
+      </div>
+
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="search-input" placeholder="搜尋筆記標題或內文...">
+        <button id="clear-search" class="clear-btn hidden"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="category-tabs">
+        <button class="tab-btn active" data-filter="all"><i class="fa-solid fa-box-archive"></i> 全部 (<span id="count-all">0</span>)</button>
+        <button class="tab-btn" data-filter="pinned"><i class="fa-solid fa-thumbtack"></i> 釘選 (<span id="count-pinned">0</span>)</button>
+      </div>
+
+      <div class="notes-list-container">
+        <ul id="notes-list" class="notes-list">
+          <!-- 筆記清單由 JS 動態渲染 -->
+        </ul>
+        <div id="empty-notes-msg" class="empty-state hidden">
+          <i class="fa-regular fa-folder-open"></i>
+          <p>尚無筆記內容</p>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <button id="theme-toggle" class="theme-btn">
+          <i class="fa-solid fa-moon"></i> 深色模式
+        </button>
+        <div class="storage-info">
+          <i class="fa-solid fa-hard-drive"></i> 本地 IndexedDB 離線安全防護
+        </div>
+      </div>
+    </aside>
 
     <!-- 主編輯區域 Main Content Area -->
     <main class="main-content">
@@ -328,3 +636,4 @@
   </script>
 </body>
 </html>
+>>>>>>> 2a4d750303283f66b38d53b6afb10eb98d821936

@@ -954,3 +954,721 @@ body, html {
   50% { transform: scale(1.15); }
   100% { transform: scale(1); }
 }
+  padding: 12px 18px;
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px var(--accent-glow);
+  transition: var(--transition-fast);
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--accent-glow);
+}
+
+/* 搜尋框 */
+.search-box {
+  margin: 0 20px 15px 20px;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px 36px 10px 36px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.search-box input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.clear-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.clear-btn:hover {
+  color: var(--text-primary);
+}
+
+/* 分類分頁 Tab */
+.category-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 0 20px 12px 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.tab-btn:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  background-color: var(--bg-secondary);
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* 筆記清單列表 */
+.notes-list-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.notes-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.note-item {
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  position: relative;
+}
+
+.note-item:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--glass-border);
+}
+
+.note-item.active {
+  background-color: var(--bg-secondary);
+  border-color: var(--accent-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.note-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.note-item-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.pin-badge {
+  color: var(--warning-color);
+  font-size: 0.8rem;
+}
+
+.note-item-preview {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 8px;
+}
+
+.note-item-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.note-tags-badge {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.tag-chip {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  gap: 12px;
+}
+
+.empty-state i {
+  font-size: 2.5rem;
+}
+
+/* 側邊欄底部 */
+.sidebar-footer {
+  padding: 15px 20px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.theme-btn {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  transition: var(--transition-fast);
+}
+
+.theme-btn:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.storage-info {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ==========================================================================
+   主內容區域 (Main Editor Area)
+   ========================================================================== */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+  position: relative;
+  overflow: visible;
+}
+
+.top-bar {
+  height: 60px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  position: relative;
+  z-index: 9999;
+}
+
+.bar-left, .bar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.icon-btn:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--text-muted);
+}
+
+.icon-btn.danger:hover {
+  background: var(--danger-color);
+  border-color: var(--danger-color);
+  color: white;
+}
+
+.icon-btn.active {
+  color: var(--warning-color);
+  border-color: var(--warning-color);
+}
+
+.saved {
+  font-size: 0.82rem;
+  color: var(--success-color);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.saving {
+  font-size: 0.82rem;
+  color: var(--warning-color);
+}
+
+/* Dropdown Menu */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 1001;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 48px;
+  background-color: var(--bg-secondary);
+  min-width: 200px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.dropdown-content a {
+  color: var(--text-primary);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  transition: var(--transition-fast);
+}
+
+.dropdown-content a:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.text-pdf { color: #f43f5e; }
+.text-word { color: #2b579a; }
+.text-html { color: #e44d26; }
+
+/* 編輯器容器與標題區 */
+.editor-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 40px;
+  overflow-y: auto;
+  position: relative;
+}
+
+.note-header-inputs {
+  margin-bottom: 16px;
+}
+
+.title-input {
+  width: 100%;
+  font-size: 2rem;
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  margin-bottom: 8px;
+}
+
+.title-input::placeholder {
+  color: var(--text-muted);
+}
+
+.note-meta-bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.tags-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tags-wrapper input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  width: 200px;
+}
+
+/* Customizing Quill Toolbar & Container */
+/* 字級大小與字型變化設定 */
+.ql-editor .ql-size-small { font-size: 0.75rem !important; }
+.ql-editor .ql-size-large { font-size: 1.3rem !important; }
+.ql-editor .ql-size-huge { font-size: 1.85rem !important; }
+
+.ql-editor .ql-font-system { font-family: system-ui, sans-serif !important; }
+.ql-editor .ql-font-microsoft-jhenghei { font-family: 'Microsoft JhengHei', '微軟正黑體', sans-serif !important; }
+.ql-editor .ql-font-noto-sans-tc { font-family: 'Noto Sans TC', sans-serif !important; }
+.ql-editor .ql-font-serif { font-family: 'Noto Serif TC', Georgia, serif !important; }
+.ql-editor .ql-font-noto-serif-tc { font-family: 'Noto Serif TC', Georgia, serif !important; }
+.ql-editor .ql-font-kai { font-family: '標楷體', 'DFKai-SB', KaiTi, serif !important; }
+.ql-editor .ql-font-monospace { font-family: 'Fira Code', 'Courier New', monospace !important; }
+
+#toolbar-container {
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background-color: var(--bg-secondary) !important;
+  padding: 10px !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+}
+
+.ql-toolbar .ql-stroke {
+  stroke: var(--text-primary) !important;
+}
+
+.ql-toolbar .ql-fill {
+  fill: var(--text-primary) !important;
+}
+
+/* 修正下拉選單 (字型、標題、字級) 寬度與溢出對齊 */
+.ql-snow .ql-picker.ql-font {
+  width: 125px !important;
+}
+
+.ql-snow .ql-picker.ql-header {
+  width: 110px !important;
+}
+
+.ql-snow .ql-picker.ql-size {
+  width: 100px !important;
+}
+
+.ql-snow .ql-picker-label {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.ql-snow .ql-picker-label {
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.ql-snow .ql-picker-label::before {
+  color: var(--text-primary) !important;
+}
+
+.ql-snow .ql-picker-options {
+  background-color: #1e293b !important;
+  border: 1px solid #475569 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+  padding: 6px !important;
+  z-index: 99999 !important;
+}
+
+.ql-snow .ql-picker-options .ql-picker-item {
+  color: #f8fafc !important;
+  padding: 8px 12px !important;
+  font-size: 0.9rem !important;
+  border-radius: 4px !important;
+}
+
+.ql-snow .ql-picker-options .ql-picker-item::before {
+  color: #f8fafc !important;
+}
+
+.ql-snow .ql-picker-options .ql-picker-item:hover,
+.ql-snow .ql-picker-options .ql-picker-item.ql-selected {
+  background-color: #334155 !important;
+  color: #818cf8 !important;
+}
+
+.ql-snow .ql-picker-options .ql-picker-item:hover::before,
+.ql-snow .ql-picker-options .ql-picker-item.ql-selected::before {
+  color: #818cf8 !important;
+}
+
+.custom-tb-btn {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  padding: 3px 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 4px;
+}
+
+.custom-tb-btn:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--accent-color);
+}
+
+/* 編輯器內部元素樣式 (引用區塊、程式碼區塊、連結) */
+.ql-editor {
+  color: var(--text-primary) !important;
+}
+
+.ql-editor blockquote {
+  border-left: 4px solid var(--accent-color) !important;
+  padding-left: 16px !important;
+  margin: 12px 0 !important;
+  color: var(--text-secondary) !important;
+  background-color: rgba(99, 102, 241, 0.08) !important;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-style: italic;
+}
+
+.ql-editor pre.ql-syntax, .ql-editor .ql-code-block-container {
+  background-color: #090d16 !important;
+  color: #38bdf8 !important;
+  padding: 14px 18px !important;
+  border-radius: var(--radius-md) !important;
+  font-family: 'Fira Code', monospace !important;
+  font-size: 0.9rem !important;
+  margin: 12px 0 !important;
+  border: 1px solid var(--border-color);
+}
+
+.ql-editor,
+.ql-editor p,
+.ql-editor span,
+.ql-editor li,
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3 {
+  color: var(--text-primary);
+}
+
+/* 只有帶有 href 屬性的超連結才顯示為藍色+底線 */
+.ql-editor a[href] {
+  color: #38bdf8 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+  font-weight: 600;
+  cursor: pointer !important;
+}
+
+.ql-editor a:hover {
+  color: #818cf8 !important;
+  text-decoration: underline !important;
+}
+
+.ql-editor {
+  padding: 24px !important;
+  min-height: 400px;
+}
+
+.ql-editor.ql-blank::before {
+  color: var(--text-muted) !important;
+  font-style: normal !important;
+}
+
+/* 圖片拖拽 Overlay */
+.drag-drop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(99, 102, 241, 0.85);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: 3px dashed white;
+  margin: 20px;
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+}
+
+.overlay-content {
+  text-align: center;
+}
+
+.overlay-content i {
+  font-size: 4rem;
+  margin-bottom: 12px;
+}
+
+.overlay-content p {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Modal 彈出視窗樣式 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  width: 90%;
+  max-width: 480px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-header h3 {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.close-btn:hover { color: var(--text-primary); }
+
+.modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.form-group input, .form-group select {
+  padding: 10px 12px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.modal-footer {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.recording-active {
+  color: var(--danger-color) !important;
+  animation: pulse-red 1.5s infinite;
+}
+
+@keyframes pulse-red {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+>>>>>>> 2a4d750303283f66b38d53b6afb10eb98d821936
