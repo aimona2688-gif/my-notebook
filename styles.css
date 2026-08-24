@@ -381,7 +381,7 @@ body, html {
   flex-direction: column;
   background-color: var(--bg-primary);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .top-bar {
@@ -393,6 +393,8 @@ body, html {
   border-bottom: 1px solid var(--border-color);
   background-color: var(--glass-bg);
   backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 1000;
 }
 
 .bar-left, .bar-right {
